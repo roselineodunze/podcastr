@@ -1,5 +1,7 @@
+"use client";
 import PodcastCard from "@/components/global/PodcastCard";
 import NoUserPodcasts from "@/components/profile/NoUserPodcasts";
+import { showToast } from "@/utils/showToast";
 import Image from "next/image";
 
 const ProfilePage = () => {
@@ -41,7 +43,12 @@ const ProfilePage = () => {
                 143,809 <span className="text-white-3">monthly listeners</span>
               </h1>
             </div>
-            <button className="text-white-1 flex items-center gap-2 justify-center bg-orange-1 h-10 rounded-md px-3 font-medium">
+            <button
+              onClick={() => {
+               showToast.success("Success", "Great work")
+              }}
+              className="text-white-1 flex items-center gap-2 justify-center bg-orange-1 h-10 rounded-md px-3 font-medium"
+            >
               <Image
                 src="/icons/play2.svg"
                 alt="app-logo"
