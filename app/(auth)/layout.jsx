@@ -1,4 +1,6 @@
 import AuthText from "@/components/auth/AuthText";
+import GithubAuth from "@/components/auth/GithubAuth";
+import GoogleAuth from "@/components/auth/GoogleAuth";
 import Image from "next/image";
 import Link from "next/link";
 
@@ -30,22 +32,8 @@ export default function RootLayout({children}) {
         </Link>
         <p className="text-14 text-white-2">to continue to Podcastr</p>
         <div className="flex items-center gap-2 my-7">
-          <div className="h-12 w-12 border-[3px] border-black-2 rounded-md flex justify-center items-center">
-            <Image
-              src="/icons/google.svg"
-              alt="app-logo"
-              width={23}
-              height={23}
-            />
-          </div>
-          <div className="h-12 w-12 border-[3px] border-black-2 rounded-md flex justify-center items-center">
-            <Image
-              src="/icons/github.svg"
-              alt="app-logo"
-              width={23}
-              height={23}
-            />
-          </div>
+          <GoogleAuth/>
+          <GithubAuth/>
         </div>
       {children}
 
