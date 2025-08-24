@@ -18,7 +18,7 @@ export default function RootLayout({children}) {
         </section>
         <RightSidebar username={user.username} />
       </main>
-      <MusicPlayer />
+      {/* <MusicPlayer /> */}
     </div>
   );
 }

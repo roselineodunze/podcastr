@@ -1,15 +1,35 @@
+"use client";
+import useCreatePodcast from "@/hooks/useCreatePodcast";
 import Image from "next/image";
+import { useState } from "react";
 
 const CreatePodcastForm = () => {
+  const [podcastData, setPodcastData] = useState({
+    podcastTitle: "",
+    podcastDescription: "",
+  });
+  const { handlePodcastCreation } = useCreatePodcast();
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setPodcastData((prevData) => ({
+      ...prevData,
+      [name]: value,
+    }));
+  };
+
   return (
     <div className="mt-12 text-white-1">
       <label className="text-16 pl-1">Podcast Title</label>
       <div className="w-full mt-2 mb-6 bg-black-1 px-3 flex items-center gap-2 h-12 rounded-md">
         <input
           type="text"
+          name="podcastTitle"
           placeholder="Enter a title"
           className="bg-transparent w-full focus:outline-none focus:ring-0 focus:border-0
 caret-white-5 placeholder-white-3"
+          value={podcastData.podcastTitle}
+          onChange={handleChange}
         />
       </div>
 
@@ -33,8 +53,11 @@ caret-white-5 placeholder-white-3"
       <div className="w-full mt-2 mb-6 bg-black-1 px-3 rounded-md pt-3">
         <textarea
           placeholder="Write a short description about the podcast"
+          name="podcastDescription"
           className="bg-transparent w-full focus:outline-none focus:ring-0 focus:border-0
 caret-white-5 placeholder-white-3 h-24 resize-none"
+          value={podcastData.podcastDescription}
+          onChange={handleChange}
         />
       </div>
 
@@ -73,7 +96,10 @@ caret-white-5 placeholder-white-3 h-32 resize-none"
         </div>
       </div>
 
-      <button className="bg-orange-1 w-full px-2 h-10 rounded-sm mb-10 text-16">
+      <button
+        className="bg-orange-1 w-full px-2 h-10 rounded-sm mb-10 text-16"
+        onClick={() => handlePodcastCreation(podcastData)}
+      >
         Submit & publish podcast
       </button>
     </div>

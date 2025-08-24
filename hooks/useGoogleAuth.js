@@ -32,6 +32,7 @@ const useGoogleAuth = () => {
             fullname: "",
             bio: "",
             profilePicURL: "",
+            podcasts: [],
             createdAt: Date.now(),
           };
           await setDoc(doc(firestore, "users", uid), newUserDoc);
