@@ -1,18 +1,15 @@
-"use client"
+"use client";
 import { useSignInWithGoogle } from "react-firebase-hooks/auth";
-import {
-  doc,
-  setDoc,
-  getDoc,
-} from "firebase/firestore";
+import { doc, setDoc, getDoc } from "firebase/firestore";
 import { showToast } from "@/utils/showToast";
 import { auth, firestore } from "@/firebase/firebase";
 import useAuthStore from "@/stores/authStore";
-
+import { useRouter } from "next/navigation";
 
 const useGoogleAuth = () => {
+  const router = useRouter();
   const [signInWithGoogle, user, loading, error] = useSignInWithGoogle(auth);
-  const {login} = useAuthStore();
+  const { login } = useAuthStore();
 
   const loginGoogle = async () => {
     try {
@@ -25,7 +22,7 @@ const useGoogleAuth = () => {
         if (userDoc.exists()) {
           console.log("acct exists");
           const loggedInUser = userDoc.data();
-          console.log(loggedInUser)
+          console.log(loggedInUser);
           login(loggedInUser);
         } else {
           const newUserDoc = {
@@ -38,18 +35,15 @@ const useGoogleAuth = () => {
             createdAt: Date.now(),
           };
           await setDoc(doc(firestore, "users", uid), newUserDoc);
-          console.log(newUserDoc)
+          console.log(newUserDoc);
           login(newUserDoc);
         }
         showToast.success("Success", "Account Created");
+        router.push("/");
       }
     } catch (err) {
       console.error(err);
-      showToast({
-        title: "Error.",
-        description: error || "Something went wrong. Please try again.",
-        status: "error",
-      });
+      showToast.error("Error", "Something went wrong. Please try again");
     }
   };
 

@@ -1,10 +1,19 @@
 "use client";
 import PodcastCard from "@/components/global/PodcastCard";
 import NoUserPodcasts from "@/components/profile/NoUserPodcasts";
+import useGetUserByUsername from "@/hooks/useGetUserByUsername";
+import useAuthStore from "@/stores/authStore";
 import { showToast } from "@/utils/showToast";
 import Image from "next/image";
+import { use } from "react";
 
-const ProfilePage = () => {
+const ProfilePage = ({ params }) => {
+  const { username } = use(params);
+  console.log(username);
+  const { userProfile } = useGetUserByUsername(username);
+  const {user} = useAuthStore()
+  const showCreatePodcastBtn = userProfile?.uid === user?.uid;
+
   return (
     <div className="mt-9 flex justify-center">
       <section className="w-[95%] ">
@@ -30,7 +39,7 @@ const ProfilePage = () => {
               <p className="text-[12px] text-white-3">UsePost Creator</p>
             </div>
             <h1 className="text-white-1 font-semibold text-3xl mb-6">
-              Roseline Odunze{" "}
+              {userProfile?.username}
             </h1>
             <div className="flex items-center gap-2 mb-7">
               <Image
@@ -45,7 +54,7 @@ const ProfilePage = () => {
             </div>
             <button
               onClick={() => {
-               showToast.success("Success", "Great work")
+                showToast.success("Success", "Great work");
               }}
               className="text-white-1 flex items-center gap-2 justify-center bg-orange-1 h-10 rounded-md px-3 font-medium"
             >
@@ -80,7 +89,7 @@ const ProfilePage = () => {
               )
             )}
           </div> */}
-          <NoUserPodcasts />
+          <NoUserPodcasts showCreatePodcastBtn={showCreatePodcastBtn}  />
         </div>
       </section>
     </div>

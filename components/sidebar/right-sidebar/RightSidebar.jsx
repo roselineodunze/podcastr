@@ -6,17 +6,18 @@ import { ChevronRight } from "lucide-react";
 import TopPodcaster from "./TopPodcaster";
 import PodcastCarousel from "./PodcastCarousel";
 
-const RightSidebar = () => {
+const RightSidebar = ({username}) => {
+  if(!username) return
   return (
     <section className="right_sidebar text-white-1">
-      <Link href="/profile" className="flex items-center justify-between">
-        <div className="flex items-center  gap-2">
-          <Avatar>
+      <Link href={`/profile/${username}`} className="flex items-center justify-between gap-2">
+        <div className="flex items-center w-[85%] gap-2">
+          <Avatar className="bg-orange-1">
             <AvatarImage src="/images/player1.png" />
           </Avatar>
-          <h1 className="text-white-1">Roseline Odunze</h1>
+          <h1 className="text-white-1 flex-1 truncate overflow-hidden whitespace-nowrap">{username}</h1>
         </div>
-        <ChevronRight className="text-orange-1" />
+        <ChevronRight className="text-orange-1 flex-end flex justify-end items-center" />
       </Link>
 
       <div className=" flex justify-between mt-12">
