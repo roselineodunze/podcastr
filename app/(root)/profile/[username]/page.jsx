@@ -1,9 +1,8 @@
 "use client";
-import PodcastCard from "@/components/global/PodcastCard";
 import NoUserPodcasts from "@/components/profile/NoUserPodcasts";
+import ProfilePosts from "@/components/profile/ProfilePodcasts";
 import useGetUserByUsername from "@/hooks/useGetUserByUsername";
 import useAuthStore from "@/stores/authStore";
-import { showToast } from "@/utils/showToast";
 import Image from "next/image";
 import { use } from "react";
 
@@ -53,9 +52,6 @@ const ProfilePage = ({ params }) => {
               </h1>
             </div>
             <button
-              onClick={() => {
-                showToast.success("Success", "Great work");
-              }}
               className="text-white-1 flex items-center gap-2 justify-center bg-orange-1 h-10 rounded-md px-3 font-medium"
             >
               <Image
@@ -69,7 +65,7 @@ const ProfilePage = ({ params }) => {
           </div>
         </div>
         <div>
-          <div className="flex items-center justify-between">
+          <div className="flex items-center justify-between mb-5">
             {" "}
             <h1 className="text-white-1 text-18">All Podcasts</h1>
             <div className="flex items-center bg-black-1 h-9 px-2 gap-1 rounded-sm text-white-3">
@@ -82,6 +78,7 @@ const ProfilePage = ({ params }) => {
               <p className="text-12 text-white-1">Apply Filter</p>
             </div>
           </div>
+          <ProfilePosts/>
           {/* <div className="flex flex-wrap justify-between">
             {[1, 2, 3, 4, 5, 6, 7, 8].map(
               (_, i) => (
@@ -89,7 +86,6 @@ const ProfilePage = ({ params }) => {
               )
             )}
           </div> */}
-          <NoUserPodcasts showCreatePodcastBtn={showCreatePodcastBtn}  />
         </div>
       </section>
     </div>

@@ -3,7 +3,7 @@ import Image from "next/image";
 
 const PodcastCard = () => {
   return (
-    <div className="mt-5">
+    <div className="mb-5">
       <figure>
         <div>
           <Image

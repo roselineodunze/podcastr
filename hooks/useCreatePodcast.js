@@ -86,7 +86,7 @@ const useCreatePodcast = () => {
       );
     } catch (err) {
       console.log(err);
-      showToast.success(
+      showToast.error(
         "Failed to create podcast.",
         "Something went wrong. Please try again."
       );
