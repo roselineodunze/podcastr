@@ -1,9 +1,10 @@
 import React from "react";
 import Image from "next/image";
+import Link from "next/link";
 
-const PodcastCard = () => {
+const PodcastCard = ({ p }) => {
   return (
-    <div className="mb-5">
+    <Link href={`/podcast/${p?.id}`} className="mb-5">
       <figure>
         <div>
           <Image
@@ -17,12 +18,10 @@ const PodcastCard = () => {
 
         <div className="mt-2">
           <h1 className="text-white-1 text-[14px] mb-1">The joe rogan</h1>
-          <p className="text-white-3 text-[12px]">
-            a long form in
-          </p>
+          <p className="text-white-3 text-[12px]">a long form in</p>
         </div>
       </figure>
-    </div>
+    </Link>
   );
 };
 

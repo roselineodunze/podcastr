@@ -3,7 +3,7 @@ import { Container, Grid, Skeleton, GridItem, Flex } from "@chakra-ui/react";
 import PodcastCard from "../global/PodcastCard";
 import useGetUserPodcasts from "@/hooks/useGetUserPodcasts";
 
-const ProfilePosts = () => {
+const ProfilePodcasts = () => {
   const [isLoading, setIsLoading] = useState(true);
   const { podcasts } = useGetUserPodcasts();
 
@@ -42,7 +42,7 @@ const ProfilePosts = () => {
           columnGap={1}
         >
           {podcasts.map((p, idx) => (
-            <PodcastCard key={idx} post={p} />
+            <PodcastCard key={idx} podcast={p} />
           ))}
         </Grid>
       )}
@@ -50,4 +50,4 @@ const ProfilePosts = () => {
   );
 };
 
-export default ProfilePosts;
+export default ProfilePodcasts;

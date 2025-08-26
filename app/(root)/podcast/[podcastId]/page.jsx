@@ -1,8 +1,16 @@
+"use client";
 import Image from "next/image";
 import { Avatar, AvatarImage } from "@/components/ui/avatar";
 import PodcastCard from "@/components/global/PodcastCard";
+import { use } from "react";
+import useGetPodcastById from "@/hooks/useGetPodcastById";
+import useGetUserByUsername from "@/hooks/useGetUserByUsername";
 
-const PodcastDetails = () => {
+const PodcastDetails = ({ params }) => {
+  const { podcastId } = use(params);
+  const { podcastDetails } = useGetPodcastById(podcastId);
+  const { userProfile: author } = useGetUserByUsername(podcastDetails?.author);
+
   return (
     <div className="mt-9 flex justify-center">
       <section className="w-[95%]">
@@ -32,7 +40,7 @@ const PodcastDetails = () => {
             <div>
               <div className="flex items-center justify-between">
                 <h1 className="text-white-1 font-semibold text-3xl ">
-                  Roseline Odunze{" "}
+                  {podcastDetails?.podcastTitle}
                 </h1>
                 <div className="relative">
                   <Image
@@ -68,7 +76,7 @@ const PodcastDetails = () => {
                 <Avatar>
                   <AvatarImage src="/images/player1.png" />
                 </Avatar>
-                <p className="text-[13px] text-white-3">Roseline Odunze</p>
+                <p className="text-[13px] text-white-3">{author.username}</p>
               </div>
             </div>
             <div className="flex items-center gap-4">
@@ -101,9 +109,7 @@ const PodcastDetails = () => {
         </div>
         <div className="mt-9 w-[90%]">
           <p className="mb-6 text-white-2 text-[14px]">
-            A computer is an electronic device capable of performing
-            computations and manipulating data under the control of instructions
-            stored in its memory
+            {podcastDetails?.podcastDescription}
           </p>
           <div>
             <h1 className="text-white-1 font-light text-l">Transcriptions</h1>

@@ -1,6 +1,5 @@
 "use client";
-import NoUserPodcasts from "@/components/profile/NoUserPodcasts";
-import ProfilePosts from "@/components/profile/ProfilePodcasts";
+import ProfilePodcasts from "@/components/profile/ProfilePodcasts";
 import useGetUserByUsername from "@/hooks/useGetUserByUsername";
 import useAuthStore from "@/stores/authStore";
 import Image from "next/image";
@@ -78,14 +77,7 @@ const ProfilePage = ({ params }) => {
               <p className="text-12 text-white-1">Apply Filter</p>
             </div>
           </div>
-          <ProfilePosts/>
-          {/* <div className="flex flex-wrap justify-between">
-            {[1, 2, 3, 4, 5, 6, 7, 8].map(
-              (_, i) => (
-                <PodcastCard key={i} />
-              )
-            )}
-          </div> */}
+          <ProfilePodcasts/>
         </div>
       </section>
     </div>
