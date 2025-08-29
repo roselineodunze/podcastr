@@ -1,7 +1,9 @@
+"use client"
 import React, { useEffect, useState } from "react";
 import { Container, Grid, Skeleton, GridItem, Flex } from "@chakra-ui/react";
 import PodcastCard from "../global/PodcastCard";
 import useGetUserPodcasts from "@/hooks/useGetUserPodcasts";
+import NoUserPodcasts from "./NoUserPodcasts";
 
 const ProfilePodcasts = () => {
   const [isLoading, setIsLoading] = useState(true);

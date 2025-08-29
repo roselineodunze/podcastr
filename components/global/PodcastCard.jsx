@@ -2,9 +2,9 @@ import React from "react";
 import Image from "next/image";
 import Link from "next/link";
 
-const PodcastCard = ({ p }) => {
+const PodcastCard = ({ podcast }) => {
   return (
-    <Link href={`/podcast/${p?.id}`} className="mb-5">
+    <Link href={`/podcast/${podcast?.id}`} className="mb-5">
       <figure>
         <div>
           <Image
