@@ -15,7 +15,7 @@ export const sidebarLinks = [
       icon: "/icons/edit.svg",
     },
     {
-      link: "/profile",
+      link: "DYNAMIC_PROFILE",
       label: "My Profile",
       icon: "/icons/profile.svg",
     },

@@ -1,6 +1,7 @@
 "use client";
 
 import { sidebarLinks } from "@/constants";
+import useAuthStore from "@/stores/authStore";
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
@@ -8,7 +9,15 @@ import React from "react";
 
 const LeftSidebar = () => {
   const pathname = usePathname();
-  const router = useRouter();
+  const {user} = useAuthStore()
+
+  const getLink = (link) => {
+    if (link.link === 'DYNAMIC_PROFILE') {
+      return `/profile/${user.username}`;
+    }
+    return link.link;
+  };
+
   return (
     <section className="left_sidebar">
       <nav className="">
@@ -26,7 +35,7 @@ const LeftSidebar = () => {
           return (
             <Link
               key={i}
-              href={item.link}
+              href={getLink(item)}
               className={`flex items-center gap-3 py-4 ${
                 isActive ? "bg-nav-focus border-r-4 border-orange-1" : ""
               }`}

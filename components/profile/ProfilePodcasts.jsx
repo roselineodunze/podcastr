@@ -18,7 +18,7 @@ const ProfilePodcasts = () => {
     <Container maxW={"container.lg"}>
       {isLoading && (
         <Grid
-          templateColumns={{ sm: "repeat(1, 1fr)", lg: "repeat(3, 1fr)" }}
+          templateColumns={{ sm: "repeat(1, 1fr)", lg: "repeat(4, 1fr)" }}
           gap={1}
           columnGap={1}
         >

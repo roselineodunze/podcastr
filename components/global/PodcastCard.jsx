@@ -10,8 +10,8 @@ const PodcastCard = ({ podcast }) => {
           <Image
             src="/images/bg-img.png"
             alt="Photo by Drew Beamer"
-            width={176}
-            height={176}
+            width={190}
+            height={190}
             className="rounded-md aspect-square object-cover"
           />
         </div>
