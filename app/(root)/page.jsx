@@ -2,19 +2,21 @@
 
 import PodcastCard from "@/components/global/PodcastCard";
 import LatestPodcastListing from "@/components/homepage/LatestPodcastListing";
-import React from "react";
+import { useQuery } from "convex/react";
+import { api } from "@/convex/_generated/api";
 
 
 const Home = () => {
 
+  const tasks = useQuery(api.tasks.get);
 
   return (
     <div className="mt-9 flex justify-center">
       <section className="w-[95%] ">
         <h1 className="text-white-1 text-18">Trending Podcasts</h1>
         <div className="flex items-center justify-between ">
-          {[1, 2, 3, 4].map((t, i) => (
-            <PodcastCard key={i} />
+          {tasks?.map(({_id, text}) => (
+            <PodcastCard key={_id} />
           ))}
         </div>
         <div className="my-6">
