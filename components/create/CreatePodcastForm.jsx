@@ -13,6 +13,8 @@ import {
 } from "@/components/ui/select";
 import { Button } from "@/components/ui/button";
 import { voiceType } from "@/constants";
+import { Input } from "@/components/ui/input";
+import { Textarea } from "@/components/ui/textarea";
 
 const CreatePodcastForm = () => {
   const [podcastData, setPodcastData] = useState({
@@ -32,17 +34,12 @@ const CreatePodcastForm = () => {
   return (
     <div className="mt-12 text-white-1">
       <label className="text-16 pl-1">Podcast Title</label>
-      <div className="w-full mt-2 mb-6 bg-black-1 px-3 flex items-center gap-2 h-12 rounded-md">
-        <input
-          type="text"
-          name="podcastTitle"
-          placeholder="Enter a title"
-          className="bg-transparent w-full focus:outline-none focus:ring-0 focus:border-0
-caret-white-5 placeholder-white-3"
-          value={podcastData.podcastTitle}
-          onChange={handleChange}
-        />
-      </div>
+      <Input
+        onChange={handleChange}
+        placeholder="Enter a title"
+        className="w-full mt-2 mb-6 focus:outline-none focus:ring-0 focus:border-0
+border-0 placeholder-white-3 bg-black-1 placeholder:text-[1rem]"
+      />
 
       <label className="text-16 pl-1">Select AI voice</label>
       <Select>
@@ -65,57 +62,35 @@ caret-white-5 placeholder-white-3"
       </Select>
 
       <label className="text-16 pl-1">Description</label>
-      <div className="w-full mt-2 mb-6 bg-black-1 px-3 rounded-md pt-3">
-        <textarea
-          placeholder="Write a short description about the podcast"
-          name="podcastDescription"
-          className="bg-transparent w-full focus:outline-none focus:ring-0 focus:border-0
-caret-white-5 placeholder-white-3 h-24 resize-none"
-          value={podcastData.podcastDescription}
-          onChange={handleChange}
-        />
-      </div>
+      <Textarea
+        placeholder="Write a short description about the podcast"
+        className="w-full mt-2 mb-6 bg-black-1 h-24 resize-none focus:outline-none focus:ring-0 focus:border-0 border-0 placeholder:text-[1rem] placeholder-white-3"
+        onChange={handleChange}
+      />
 
       <div className="h-2 bg-black-1 my-8"></div>
 
       <label className="text-16 pl-1">AI prompt to generate podcast</label>
-      <div className="w-full mt-2 mb-5 bg-black-1 px-3 rounded-md pt-3">
-        <textarea
-          placeholder="Provide text to genrate audio"
-          className="bg-transparent w-full focus:outline-none focus:ring-0 focus:border-0
-caret-white-5 placeholder-white-3 h-32 resize-none"
-        />
-      </div>
+      <Textarea
+        placeholder="Provide text to generate audio"
+        className="w-full mt-2 mb-6 bg-black-1 h-32 resize-none focus:outline-none focus:ring-0 focus:border-0 border-0 placeholder:text-[1rem] placeholder-white-3"
+        onChange={handleChange}
+      />
 
-      <Button
-        className="bg-orange-1 w-[80] h-10 rounded-md text-16"
-      >
+      <Button className="bg-orange-1 w-[80] h-10 rounded-md text-16 ml-1">
         Generate
       </Button>
 
-      <div className="w-fit mt-2 mb-3 bg-black-1 px-3 flex items-center gap-3 h-12 rounded-md mt-10">
-        <p className="text-16">AI prompt to generate audio</p>
-        <button className="bg-black-2 px-2 h-8 rounded-md">
+      <div className="w-fit mb-3 bg-black-1 px-3 flex items-center gap-3 h-12 rounded-md mt-10">
+        <p className="text-16">AI prompt to generate image</p>
+        <Button
+          className="bg-black-2 h-8 text-16"
+          onClick={() => handlePodcastCreation(podcastData)}
+        >
           Upload custom image
-        </button>
+        </Button>
       </div>
 
-      {/* <div className="w-full mb-6 px-3 bg-black-1 rounded-md pt-3 h-40 flex justify-center items-center">
-        <div className="w-[35%] text-center flex flex-col items-center gap-2">
-          <div className="h-10 w-10 border-4 border-black-2 rounded-full flex items-center justify-center">
-            <Image
-              src="/icons/cloud.svg"
-              alt="app-logo"
-              width={25}
-              height={25}
-            />
-          </div>
-          <p className="text-14">
-            <span className=" text-orange-1">Click to signal</span> lorem ipsum
-            dolor sit amet, consectetur adipiscing elit.
-          </p>
-        </div>
-      </div> */}
       <Button
         className="bg-orange-1 w-full h-10 rounded-sm mb-10 text-16"
         onClick={() => handlePodcastCreation(podcastData)}
