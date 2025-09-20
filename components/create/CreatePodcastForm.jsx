@@ -7,7 +7,6 @@ import {
   SelectContent,
   SelectGroup,
   SelectItem,
-  SelectLabel,
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
@@ -20,6 +19,8 @@ const CreatePodcastForm = () => {
   const [podcastData, setPodcastData] = useState({
     podcastTitle: "",
     podcastDescription: "",
+    voicePrompt: "",
+    selectedVoice: "",
   });
   const { handlePodcastCreation } = useCreatePodcast();
 
@@ -36,13 +37,24 @@ const CreatePodcastForm = () => {
       <label className="text-16 pl-1">Podcast Title</label>
       <Input
         onChange={handleChange}
+        value={podcastData.podcastTitle}
+        name="podcastTitle"
         placeholder="Enter a title"
         className="w-full mt-2 mb-6 focus:outline-none focus:ring-0 focus:border-0
 border-0 placeholder-white-3 bg-black-1 placeholder:text-[1rem]"
       />
 
       <label className="text-16 pl-1">Select AI voice</label>
-      <Select>
+      <Select
+        name="selectedVoice"
+        value={podcastData.selectedVoice}
+        onValueChange={(value) =>
+          setPodcastData((prev) => ({
+            ...prev,
+            selectedVoice: value,
+          }))
+        }
+      >
         <SelectTrigger className="w-full bg-black-1 rounded-md mt-2 mb-6 focus:outline-none focus:ring-0 focus:border-0 border-0 text-white-3 text-[1rem]">
           <SelectValue placeholder="Select AI voice" />
         </SelectTrigger>
@@ -63,6 +75,8 @@ border-0 placeholder-white-3 bg-black-1 placeholder:text-[1rem]"
 
       <label className="text-16 pl-1">Description</label>
       <Textarea
+        name="podcastDescription"
+        value={podcastData.podcastDescription}
         placeholder="Write a short description about the podcast"
         className="w-full mt-2 mb-6 bg-black-1 h-24 resize-none focus:outline-none focus:ring-0 focus:border-0 border-0 placeholder:text-[1rem] placeholder-white-3"
         onChange={handleChange}
@@ -72,6 +86,8 @@ border-0 placeholder-white-3 bg-black-1 placeholder:text-[1rem]"
 
       <label className="text-16 pl-1">AI prompt to generate podcast</label>
       <Textarea
+        name="voicePrompt"
+        value={podcastData.voicePrompt}
         placeholder="Provide text to generate audio"
         className="w-full mt-2 mb-6 bg-black-1 h-32 resize-none focus:outline-none focus:ring-0 focus:border-0 border-0 placeholder:text-[1rem] placeholder-white-3"
         onChange={handleChange}
