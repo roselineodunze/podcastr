@@ -20,3 +20,6 @@ export const sidebarLinks = [
       icon: "/icons/profile.svg",
     },
   ]
+
+export const voiceType = ["alloy", "echo", "fable", "nova", "onyx", "shimmer"
+]
