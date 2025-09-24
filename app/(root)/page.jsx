@@ -11,8 +11,8 @@ const Home = () => {
       <section className="w-[95%] ">
         <h1 className="text-white-1 text-18">Trending Podcasts</h1>
         <div className="flex items-center justify-between ">
-          {[1, 2, 3, 4].map(({ _id, text }) => (
-            <PodcastCard key={_id} />
+          {[1, 2, 3, 4].map((item) => (
+            <PodcastCard key={item} />
           ))}
         </div>
         <div className="my-6">

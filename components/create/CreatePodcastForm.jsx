@@ -1,6 +1,5 @@
 "use client";
 import useCreatePodcast from "@/hooks/useCreatePodcast";
-import Image from "next/image";
 import { useState } from "react";
 import {
   Select,
@@ -14,6 +13,8 @@ import { Button } from "@/components/ui/button";
 import { voiceType } from "@/constants";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
+import { useMutation, useQuery, useAction } from "convex/react";
+import { api } from "@/convex/_generated/api";
 
 const CreatePodcastForm = () => {
   const [podcastData, setPodcastData] = useState({
@@ -22,7 +23,9 @@ const CreatePodcastForm = () => {
     voicePrompt: "",
     selectedVoice: "",
   });
+  const [generatedAudio, setGeneratedAudio] = useState(null);
   const { handlePodcastCreation } = useCreatePodcast();
+  const generatePodcastAudio = useAction(api.openai.generatePodcastAudio);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -93,9 +96,25 @@ border-0 placeholder-white-3 bg-black-1 placeholder:text-[1rem]"
         onChange={handleChange}
       />
 
-      <Button className="bg-orange-1 w-[80] h-10 rounded-md text-16 ml-1">
+      <Button
+        className="bg-orange-1 w-[80] h-10 rounded-md text-16 ml-1"
+        onClick={async () => {
+          const { voicePrompt, selectedVoice } = podcastData;
+          const audioBase64 = await generatePodcastAudio({
+            voicePrompt,
+            selectedVoice,
+          });
+          console.log("Received audio:", audioBase64);
+          const audio = `data:audio/mp3;base64,${audioBase64}`;
+          setGeneratedAudio(audio);
+        }}
+      >
         Generate
       </Button>
+
+      {generatedAudio && (
+        <audio controls src={generatedAudio} className="my-4" />
+      )}
 
       <div className="w-fit mb-3 bg-black-1 px-3 flex items-center gap-3 h-12 rounded-md mt-10">
         <p className="text-16">AI prompt to generate image</p>
