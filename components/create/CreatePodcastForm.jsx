@@ -22,10 +22,15 @@ const CreatePodcastForm = () => {
     podcastDescription: "",
     voicePrompt: "",
     selectedVoice: "",
+    audioUrl: "",
+    audioStorageId: "",
+    audioDuration: 0,
   });
   const [generatedAudio, setGeneratedAudio] = useState(null);
+  const [audioFile, setAudioFile] = useState(null);
   const { handlePodcastCreation } = useCreatePodcast();
   const generatePodcastAudio = useAction(api.openai.generatePodcastAudio);
+  const generateUploadUrl = useMutation(api.audio.generateUploadUrl);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -33,6 +38,18 @@ const CreatePodcastForm = () => {
       ...prevData,
       [name]: value,
     }));
+  };
+
+  const handleAudioUpload = async () => {
+    if (!audioFile) return;
+    const uploadUrl = await generateUploadUrl();
+    const res = await fetch(uploadUrl, {
+      method: "POST",
+      headers: { "Content-Type": file.type },
+      body: file,
+    });
+    const { audioStorageId } = await res.json();
+    console.log("✅ Uploaded! Storage ID:", storageId);
   };
 
   return (

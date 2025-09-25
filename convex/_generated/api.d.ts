@@ -13,6 +13,7 @@ import type {
   FilterApi,
   FunctionReference,
 } from "convex/server";
+import type * as audio from "../audio.js";
 import type * as openai from "../openai.js";
 
 /**
@@ -24,6 +25,7 @@ import type * as openai from "../openai.js";
  * ```
  */
 declare const fullApi: ApiFromModules<{
+  audio: typeof audio;
   openai: typeof openai;
 }>;
 export declare const api: FilterApi<
