@@ -5,6 +5,7 @@ import { showToast } from "@/utils/showToast";
 import { auth, firestore } from "@/firebase/firebase";
 import useAuthStore from "@/stores/authStore";
 import { useRouter } from "next/navigation";
+import useUserProfileStore from "@/stores/userProfileStore";
 
 const useGoogleAuth = () => {
   const router = useRouter();

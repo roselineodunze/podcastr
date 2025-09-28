@@ -1,3 +1,5 @@
+import { resolve } from "path";
+
 export const base64ToBlob = (base64, type = "audio/mp3") => {
   const byteCharacters = atob(base64);
   const byteNumbers = new Array(byteCharacters.length);
@@ -9,14 +11,17 @@ export const base64ToBlob = (base64, type = "audio/mp3") => {
 };
 
 export const getAudioDuration = (audioBlob) => {
-  const audioUrl = URL.createObjectURL(audioBlob);
-  const audioElement = new Audio(audioUrl);
-  const durationInSeconds = 0;
+  return new Promise((resolve, reject) => {
+    const audioUrl = URL.createObjectURL(audioBlob);
+    const audioElement = new Audio(audioUrl);
 
-  audioElement.addEventListener("loadedmetadata", () => {
-    durationInSeconds = audioElement.duration;
-    console.log("⏱️ Audio duration:", durationInSeconds);
+    audioElement.addEventListener("loadedmetadata", () => {
+      console.log("⏱️ Audio duration:", audioElement.duration);
+      resolve(audioElement.duration);
+    });
+    audioElement.addEventListener("error", (e) => {
+      reject(e);
+    });
   });
-
-  return durationInSeconds;
 };
+

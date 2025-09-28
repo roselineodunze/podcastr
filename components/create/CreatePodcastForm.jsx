@@ -1,6 +1,6 @@
 "use client";
 import useCreatePodcast from "@/hooks/useCreatePodcast";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {
   Select,
   SelectContent,
@@ -15,7 +15,9 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { useMutation, useQuery, useAction } from "convex/react";
 import { api } from "@/convex/_generated/api";
-import { base64ToBlob } from "@/utils/utils";
+import { base64ToBlob, getAudioDuration } from "@/utils/utils";
+import useUserProfileStore from "@/stores/userProfileStore";
+import useAuthStore from "@/stores/authStore";
 
 const CreatePodcastForm = () => {
   const [podcastData, setPodcastData] = useState({
@@ -29,8 +31,14 @@ const CreatePodcastForm = () => {
   const [generatedAudio, setGeneratedAudio] = useState(null);
   const [audioFile, setAudioFile] = useState(null);
   const { handlePodcastCreation } = useCreatePodcast();
+  const { user } = useAuthStore();
+  const { setUserprofile } = useUserProfileStore();
   const generatePodcastAudio = useAction(api.openai.generatePodcastAudio);
   const generateUploadUrl = useMutation(api.audio.generateUploadUrl);
+
+  useEffect(() => {
+    setUserprofile(user);
+  }, [user]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -47,7 +55,14 @@ const CreatePodcastForm = () => {
       selectedVoice,
     });
     console.log("Received audio:", audioBase64);
+
     const audioBlob = base64ToBlob(audioBase64);
+    const audioDuration = await getAudioDuration(audioBlob);
+    setPodcastData((prev) => ({
+      ...prev,
+      audioDuration: Number(audioDuration.toFixed(2)),
+    }));
+
     const fileName = `podcast-${Date.now()}.mp3`;
     const newAudioFile = new File([audioBlob], fileName, {
       type: "audio/mp3",
@@ -60,19 +75,38 @@ const CreatePodcastForm = () => {
   };
 
   const handleAudioUpload = async () => {
-    if (!audioFile) return;
-    const uploadUrl = await generateUploadUrl();
-    const res = await fetch(uploadUrl, {
-      method: "POST",
-      headers: { "Content-Type": file.type },
-      body: file,
-    });
-    const { audioStorageId } = await res.json();
-    console.log("✅ Uploaded! Storage ID:", storageId);
-    setPodcastData((prev) => ({
-      ...prev,
-      audioStorageId,
-    }));
+    try {
+      if (!audioFile) throw new Error("No audio file selected.");
+
+      const uploadUrl = await generateUploadUrl();
+      if (!uploadUrl) throw new Error("Failed to get upload URL.");
+
+      const res = await fetch(uploadUrl, {
+        method: "POST",
+        headers: { "Content-Type": audioFile.type },
+        body: audioFile,
+      });
+
+      if (!res.ok) throw new Error("Audio upload failed.");
+
+      const { storageId } = await res.json();
+      if (!storageId) throw new Error("No storage ID returned from upload.");
+      console.log("✅ Uploaded! Storage ID:", storageId);
+
+      const finalPodcastData = {
+        ...podcastData,
+        audioStorageId: storageId,
+      };
+
+      setPodcastData(finalPodcastData);
+      console.log(finalPodcastData);
+      
+      await handlePodcastCreation(finalPodcastData);
+
+    } catch (err) {
+      console.error("❌ Failed to upload and create podcast:", err?.message);
+      showToast.error("Failed to create podcast", err?.message);
+    }
   };
 
   return (
@@ -151,7 +185,7 @@ border-0 placeholder-white-3 bg-black-1 placeholder:text-[1rem]"
         <p className="text-16">AI prompt to generate image</p>
         <Button
           className="bg-black-2 h-8 text-16"
-          onClick={() => handlePodcastCreation(podcastData)}
+          onClick={async () => await handlePodcastCreation(podcastData)}
         >
           Upload custom image
         </Button>
@@ -159,7 +193,7 @@ border-0 placeholder-white-3 bg-black-1 placeholder:text-[1rem]"
 
       <Button
         className="bg-orange-1 w-full h-10 rounded-sm mb-10 text-16"
-        onClick={() => handlePodcastCreation(podcastData)}
+        onClick={handleAudioUpload}
       >
         {" "}
         Submit & publish podcast
