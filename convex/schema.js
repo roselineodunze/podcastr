@@ -6,7 +6,6 @@ export default defineSchema({
     user: v.string(),
     podcastTitle: v.string(),
     podcastDescription: v.string(),
-    audioUrl: v.optional(v.string()),
     audioStorageId: v.optional(v.id("_storage")),
     imageUrl: v.optional(v.string()),
     imageStorageId: v.optional(v.id("_storage")),

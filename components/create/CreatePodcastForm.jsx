@@ -15,6 +15,7 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { useMutation, useQuery, useAction } from "convex/react";
 import { api } from "@/convex/_generated/api";
+import { base64ToBlob } from "@/utils/utils";
 
 const CreatePodcastForm = () => {
   const [podcastData, setPodcastData] = useState({
@@ -22,7 +23,6 @@ const CreatePodcastForm = () => {
     podcastDescription: "",
     voicePrompt: "",
     selectedVoice: "",
-    audioUrl: "",
     audioStorageId: "",
     audioDuration: 0,
   });
@@ -40,6 +40,25 @@ const CreatePodcastForm = () => {
     }));
   };
 
+  const handlePodcastAudioGeneration = async () => {
+    const { voicePrompt, selectedVoice } = podcastData;
+    const audioBase64 = await generatePodcastAudio({
+      voicePrompt,
+      selectedVoice,
+    });
+    console.log("Received audio:", audioBase64);
+    const audioBlob = base64ToBlob(audioBase64);
+    const fileName = `podcast-${Date.now()}.mp3`;
+    const newAudioFile = new File([audioBlob], fileName, {
+      type: "audio/mp3",
+    });
+
+    setAudioFile(newAudioFile);
+
+    const audio = `data:audio/mp3;base64,${audioBase64}`;
+    setGeneratedAudio(audio);
+  };
+
   const handleAudioUpload = async () => {
     if (!audioFile) return;
     const uploadUrl = await generateUploadUrl();
@@ -50,6 +69,10 @@ const CreatePodcastForm = () => {
     });
     const { audioStorageId } = await res.json();
     console.log("✅ Uploaded! Storage ID:", storageId);
+    setPodcastData((prev) => ({
+      ...prev,
+      audioStorageId,
+    }));
   };
 
   return (
@@ -115,16 +138,7 @@ border-0 placeholder-white-3 bg-black-1 placeholder:text-[1rem]"
 
       <Button
         className="bg-orange-1 w-[80] h-10 rounded-md text-16 ml-1"
-        onClick={async () => {
-          const { voicePrompt, selectedVoice } = podcastData;
-          const audioBase64 = await generatePodcastAudio({
-            voicePrompt,
-            selectedVoice,
-          });
-          console.log("Received audio:", audioBase64);
-          const audio = `data:audio/mp3;base64,${audioBase64}`;
-          setGeneratedAudio(audio);
-        }}
+        onClick={handlePodcastAudioGeneration}
       >
         Generate
       </Button>

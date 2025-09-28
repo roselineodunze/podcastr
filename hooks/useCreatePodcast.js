@@ -54,7 +54,6 @@ const useCreatePodcast = () => {
     const newPodcast = {
       podcastTitle: podcastDetails.podcastTitle,
       podcastDescription: podcastDetails.podcastDescription,
-      audioUrl: "",
       audioStorageId: "",
       imageUrl: "",
       imageStorageId: "",
