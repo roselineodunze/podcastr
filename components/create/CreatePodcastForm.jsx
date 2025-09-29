@@ -18,6 +18,7 @@ import { api } from "@/convex/_generated/api";
 import { base64ToBlob, getAudioDuration } from "@/utils/utils";
 import useUserProfileStore from "@/stores/userProfileStore";
 import useAuthStore from "@/stores/authStore";
+import { useRouter } from 'next/navigation';
 
 const CreatePodcastForm = () => {
   const [podcastData, setPodcastData] = useState({
@@ -30,11 +31,12 @@ const CreatePodcastForm = () => {
   });
   const [generatedAudio, setGeneratedAudio] = useState(null);
   const [audioFile, setAudioFile] = useState(null);
-  const { handlePodcastCreation } = useCreatePodcast();
+  const { handlePodcastCreation, podcastId } = useCreatePodcast();
   const { user } = useAuthStore();
   const { setUserprofile } = useUserProfileStore();
   const generatePodcastAudio = useAction(api.openai.generatePodcastAudio);
   const generateUploadUrl = useMutation(api.audio.generateUploadUrl);
+  const router = useRouter();
 
   useEffect(() => {
     setUserprofile(user);
@@ -102,6 +104,8 @@ const CreatePodcastForm = () => {
       console.log(finalPodcastData);
       
       await handlePodcastCreation(finalPodcastData);
+      router.push(`/podcast/${podcastId}`);
+
 
     } catch (err) {
       console.error("❌ Failed to upload and create podcast:", err?.message);

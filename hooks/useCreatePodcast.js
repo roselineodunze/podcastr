@@ -12,11 +12,13 @@ import useUserProfileStore from "@/stores/userProfileStore";
 import { showToast } from "@/utils/showToast";
 import { firestore } from "@/firebase/firebase";
 import usePodcastStore from "@/stores/podcastStore";
+import { useState } from "react";
 
 const useCreatePodcast = () => {
   const { addPodcast } = useUserProfileStore();
   const { user } = useAuthStore();
   const { createPodcast } = usePodcastStore();
+  const [podcastId, setPodcastId] = useState(null)
 
   //   const uploadPodcastImg = async (picture) => {
   //     if (!picture) return null;
@@ -76,6 +78,8 @@ const useCreatePodcast = () => {
 
       await updateDoc(userDocRef, { podcasts: arrayUnion(podcastDocRef.id) });
 
+      setPodcastId(podcastDocRef.id)
+      
       createPodcast({ ...newPodcast, id: podcastDocRef.id });
       addPodcast(podcastDocRef);
 
@@ -92,7 +96,7 @@ const useCreatePodcast = () => {
     }
   };
 
-  return { handlePodcastCreation };
+  return { handlePodcastCreation, podcastId };
 };
 
 export default useCreatePodcast;

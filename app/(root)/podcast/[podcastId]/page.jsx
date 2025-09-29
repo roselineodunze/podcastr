@@ -76,7 +76,7 @@ const PodcastDetails = ({ params }) => {
                 <Avatar>
                   <AvatarImage src="/images/player1.png" />
                 </Avatar>
-                <p className="text-[13px] text-white-3">{author.username}</p>
+                <p className="text-[13px] text-white-3">{author?.username}</p>
               </div>
             </div>
             <div className="flex items-center gap-4">
@@ -113,15 +113,7 @@ const PodcastDetails = ({ params }) => {
           </p>
           <div>
             <h1 className="text-white-1 font-light text-l">Transcriptions</h1>
-            <p className="mb-6 text-white-2">
-              A computer is an electronic device capable of performing
-              computations and manipulating data under the control of
-              instructions stored in its memory. These instructions, known as
-              programs, allow computers to perform a wide variety of tasks, from
-              basic calculations to complex data processing. Computers come in
-              various sizes and forms, ranging from handheld smartphones to
-              powerful supercomputers.{" "}
-            </p>
+            <p className="mb-6 text-white-2">{podcastDetails?.voicePrompt}</p>
           </div>
           <div>
             <h1 className="text-white-1 font-light text-l">Thumbnail Prompt</h1>
