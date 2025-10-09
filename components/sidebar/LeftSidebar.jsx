@@ -1,19 +1,34 @@
 "use client";
-
+import React, { useState, useEffect } from "react";
 import { sidebarLinks } from "@/constants";
 import useAuthStore from "@/stores/authStore";
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
-import React from "react";
+import { Spinner2 } from "../ui/spinner2";
 
 const LeftSidebar = () => {
   const pathname = usePathname();
-  const {user} = useAuthStore()
+  const [mounted, setMounted] = useState(false);
+
+  const { user } = useAuthStore();
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+  if (!mounted || !user) {
+    return (
+      <section className="left_sidebar">
+        <div className="w-full flex items-center">
+          <Spinner2 />
+        </div>
+      </section>
+    );
+  }
 
   const getLink = (link) => {
-    if (link.link === 'DYNAMIC_PROFILE') {
-      return `/profile/${user.username}`;
+    if (link.link === "DYNAMIC_PROFILE") {
+      return `/profile/${user?.username}`;
     }
     return link.link;
   };
@@ -30,8 +45,7 @@ const LeftSidebar = () => {
         </Link>
 
         {sidebarLinks.map((item, i) => {
-          const isActive =
-            pathname === item.link;
+          const isActive = pathname === item.link;
           return (
             <Link
               key={i}
@@ -41,7 +55,7 @@ const LeftSidebar = () => {
               }`}
             >
               <Image src={item.icon} alt={item.label} width={24} height={24} />
-              <p className="text-[16px] text-white-5 hover:text-white-1">
+              <p className="block md:hidden text-[16px] text-white-5 hover:text-white-1 lg:block">
                 {item.label}
               </p>
             </Link>

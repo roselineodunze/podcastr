@@ -41,6 +41,12 @@ html {
   box-shadow: 0 -6px 20px rgba(0, 0, 0, 0.2);
 }
 
+.disabled {
+  opacity: 0.5;
+  pointer-events: none;
+  cursor: not-allowed;
+}
+
 
 
 @layer utilities {
@@ -51,10 +57,10 @@ html {
     @apply grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4;
   }
   .right_sidebar {
-    @apply flex w-[310px] flex-col border-none bg-black-1 px-[30px] pt-8 max-xl:hidden;
+    @apply hidden lg:flex w-[310px] flex-col border-none bg-black-1 px-[30px] pt-8 max-xl:hidden;
   }
   .left_sidebar {
-    @apply flex w-fit flex-col justify-between  border-none  bg-black-1 pt-8 text-white-1 max-md:hidden lg:w-[270px] lg:pl-8;
+    @apply  flex flex-col justify-between  border-none  bg-black-1 pt-8 text-white-1 md:w-[70px] lg:w-[270px] lg:pl-8;
   }
   .generate_thumbnail {
     @apply mt-[30px] flex w-full max-w-[520px] flex-col justify-between gap-2 rounded-lg border border-black-6 bg-black-1 px-2.5 py-2 md:flex-row md:gap-0;

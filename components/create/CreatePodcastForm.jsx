@@ -18,7 +18,8 @@ import { api } from "@/convex/_generated/api";
 import { base64ToBlob, getAudioDuration } from "@/utils/utils";
 import useUserProfileStore from "@/stores/userProfileStore";
 import useAuthStore from "@/stores/authStore";
-import { useRouter } from 'next/navigation';
+import { useRouter } from "next/navigation";
+import { Spinner } from "@/components/ui/spinner";
 
 const CreatePodcastForm = () => {
   const [podcastData, setPodcastData] = useState({
@@ -31,11 +32,11 @@ const CreatePodcastForm = () => {
   });
   const [generatedAudio, setGeneratedAudio] = useState(null);
   const [audioFile, setAudioFile] = useState(null);
-  const { handlePodcastCreation, podcastId } = useCreatePodcast();
+  const { handlePodcastCreation, podcastId, loading } = useCreatePodcast();
   const { user } = useAuthStore();
   const { setUserprofile } = useUserProfileStore();
-  const generatePodcastAudio = useAction(api.openai.generatePodcastAudio);
-  const generateUploadUrl = useMutation(api.audio.generateUploadUrl);
+  // const generatePodcastAudio = useAction(api.openai.generatePodcastAudio);
+  // const generateUploadUrl = useMutation(api.audio.generateUploadUrl);
   const router = useRouter();
 
   useEffect(() => {
@@ -78,35 +79,33 @@ const CreatePodcastForm = () => {
 
   const handleAudioUpload = async () => {
     try {
-      if (!audioFile) throw new Error("No audio file selected.");
+      // if (!audioFile) throw new Error("No audio file selected.");
 
-      const uploadUrl = await generateUploadUrl();
-      if (!uploadUrl) throw new Error("Failed to get upload URL.");
+      // const uploadUrl = await generateUploadUrl();
+      // if (!uploadUrl) throw new Error("Failed to get upload URL.");
 
-      const res = await fetch(uploadUrl, {
-        method: "POST",
-        headers: { "Content-Type": audioFile.type },
-        body: audioFile,
-      });
+      // const res = await fetch(uploadUrl, {
+      //   method: "POST",
+      //   headers: { "Content-Type": audioFile.type },
+      //   body: audioFile,
+      // });
 
-      if (!res.ok) throw new Error("Audio upload failed.");
+      // if (!res.ok) throw new Error("Audio upload failed.");
 
-      const { storageId } = await res.json();
-      if (!storageId) throw new Error("No storage ID returned from upload.");
-      console.log("✅ Uploaded! Storage ID:", storageId);
+      // const { storageId } = await res.json();
+      // if (!storageId) throw new Error("No storage ID returned from upload.");
+      // console.log("✅ Uploaded! Storage ID:", storageId);
 
       const finalPodcastData = {
         ...podcastData,
-        audioStorageId: storageId,
+        // audioStorageId: storageId,
       };
 
       setPodcastData(finalPodcastData);
       console.log(finalPodcastData);
-      
+
       await handlePodcastCreation(finalPodcastData);
       router.push(`/podcast/${podcastId}`);
-
-
     } catch (err) {
       console.error("❌ Failed to upload and create podcast:", err?.message);
       showToast.error("Failed to create podcast", err?.message);
@@ -199,8 +198,7 @@ border-0 placeholder-white-3 bg-black-1 placeholder:text-[1rem]"
         className="bg-orange-1 w-full h-10 rounded-sm mb-10 text-16"
         onClick={handleAudioUpload}
       >
-        {" "}
-        Submit & publish podcast
+        {loading ? <Spinner className="size-6" /> : "Submit & publish podcast"}
       </Button>
     </div>
   );

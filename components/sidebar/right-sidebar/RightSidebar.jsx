@@ -1,17 +1,28 @@
+"use client"
 import Link from "next/link";
-import React from "react";
+import React, {useState, useEffect} from "react";
 import { Avatar, AvatarImage } from "../../ui/avatar";
 import { ChevronRight } from "lucide-react";
 
 import TopPodcaster from "./TopPodcaster";
 import PodcastCarousel from "./PodcastCarousel";
+import useAuthStore from "@/stores/authStore";
 
-const RightSidebar = ({ username }) => {
-  if (!username) return;
+
+const RightSidebar = ( ) => {
+  const [mounted, setMounted] = useState(false);
+  const {user} = useAuthStore()
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  if (!mounted || !user) return null;
+
   return (
     <section className="right_sidebar text-white-1">
       <Link
-        href={`/profile/${username}`}
+        href={`/profile/${user?.username}`}
         className="flex items-center justify-between gap-2"
       >
         <div className="flex items-center w-[85%] gap-2">
@@ -19,7 +30,7 @@ const RightSidebar = ({ username }) => {
             <AvatarImage src="/images/player1.png" />
           </Avatar>
           <h1 className="text-white-1 flex-1 truncate overflow-hidden whitespace-nowrap">
-            {username}
+            {user?.username}
           </h1>
         </div>
         <ChevronRight className="text-orange-1 flex-end flex justify-end items-center" />

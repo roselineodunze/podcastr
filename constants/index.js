@@ -29,3 +29,7 @@ export const voiceType = [
   "emily",
   "kim",
 ];
+
+export const protectedRoutes = [
+  "/", "/podcast/*", "/create-podcast", "/discover", "/profile/*",
+]

@@ -10,7 +10,7 @@ const AuthText = () => {
     pathname === "/sign-in" ? true : pathname === "/sign-up" ? false : null;
 
   return (
-    <p className="text-14 text-white-2">
+    <p className="text-14 text-white-2 flex-1">
       {isSignIn ? "No account" : "Have an account"}?
       <Link href={isSignIn ? "/sign-up" : "sign-in"}>
         <span className="text-orange-1">

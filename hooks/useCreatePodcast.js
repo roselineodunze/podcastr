@@ -1,3 +1,4 @@
+"use client"
 import {
   setDoc,
   doc,
@@ -19,37 +20,12 @@ const useCreatePodcast = () => {
   const { user } = useAuthStore();
   const { createPodcast } = usePodcastStore();
   const [podcastId, setPodcastId] = useState(null)
+  const [loading, setLoading] = useState(false)
 
-  //   const uploadPodcastImg = async (picture) => {
-  //     if (!picture) return null;
-
-  //     try {
-  //       const response = await storageAPI.posts.upload(picture);
-
-  //       const postImageURL = `${
-  //         import.meta.env.VITE_APPWRITE_ENDPOINT
-  //       }/storage/buckets/${
-  //         import.meta.env.VITE_APPWRITE_POSTS_BUCKET_ID
-  //       }/files/${response.$id}/view?project=${
-  //         import.meta.env.VITE_APPWRITE_PROJECT_ID
-  //       }`;
-
-  //       return postImageURL;
-  //     } catch (error) {
-  //       console.error("Profile picture upload error:", error);
-  //       throw new Error("Failed to upload profile picture");
-  //     }
-  //   };
 
   const handlePodcastCreation = async (podcastDetails) => {
-    // if (!picture) {
-    //   return showToast({
-    //     title: "Failed to upload post.",
-    //     description: "Please insert a picture.",
-    //     status: "error",
-    //   });
-    // }
-    // console.log("creating posts");
+
+    setLoading(true)
     if (!podcastDetails) {
       return;
     }
@@ -87,6 +63,7 @@ const useCreatePodcast = () => {
         "Podcast Created Successfully",
         "Your podcast was uploaded successfully."
       );
+      setLoading(false)
     } catch (err) {
       console.log(err);
       showToast.error(
@@ -96,7 +73,7 @@ const useCreatePodcast = () => {
     }
   };
 
-  return { handlePodcastCreation, podcastId };
+  return { handlePodcastCreation, podcastId, loading };
 };
 
 export default useCreatePodcast;

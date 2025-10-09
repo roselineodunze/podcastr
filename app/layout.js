@@ -3,6 +3,7 @@ import "./globals.css";
 import { Provider } from "../components/ui/provider";
 import { Toaster } from "@/components/ui/toaster";
 import { ConvexClientProvider } from "./providers/ConvexClientProvider";
+import ClientThemeProvider from "@/components/ClientThemeProvider";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -25,13 +26,14 @@ export default function RootLayout({ children }) {
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
-        <ConvexClientProvider>
-          <Provider>
-            {" "}
-            {children}
-            <Toaster></Toaster>{" "}
-          </Provider>
-        </ConvexClientProvider>
+        <ClientThemeProvider>
+          <ConvexClientProvider>
+            <Provider>
+                {children}
+                <Toaster></Toaster>
+            </Provider>
+          </ConvexClientProvider>
+        </ClientThemeProvider>
       </body>
     </html>
   );
