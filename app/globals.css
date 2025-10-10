@@ -60,7 +60,7 @@ html {
     @apply hidden lg:flex w-[310px] flex-col border-none bg-black-1 px-[30px] pt-8 max-xl:hidden;
   }
   .left_sidebar {
-    @apply  flex flex-col justify-between  border-none  bg-black-1 pt-8 text-white-1 md:w-[70px] lg:w-[270px] lg:pl-8;
+    @apply md:flex flex-col justify-between transition-all duration-300 border-none  bg-black-1 pt-8 text-white-1 md:w-[70px] lg:w-[270px] lg:pl-8;
   }
   .generate_thumbnail {
     @apply mt-[30px] flex w-full max-w-[520px] flex-col justify-between gap-2 rounded-lg border border-black-6 bg-black-1 px-2.5 py-2 md:flex-row md:gap-0;

@@ -7,11 +7,10 @@ import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { Spinner2 } from "../ui/spinner2";
 
-const LeftSidebar = () => {
+const LeftSidebar = ({isOpen}) => {
   const pathname = usePathname();
-  const [mounted, setMounted] = useState(false);
-
   const { user } = useAuthStore();
+  const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
     setMounted(true);
@@ -34,7 +33,7 @@ const LeftSidebar = () => {
   };
 
   return (
-    <section className="left_sidebar">
+    <section className={`left_sidebar ${isOpen ? "flex w-full max-w-[270px] fixed left-0 top-0 h-full z-50" : "hidden"}`}>
       <nav className="">
         <Link
           href="/"
