@@ -36,12 +36,12 @@ const LeftSidebar = ({ showSidebar, setShowSidebar }) => {
 
   return (
     <section
-      className={`left_sidebar ${showSidebar ? "flex w-full max-w-[270px] fixed left-0 top-0 h-full z-50" : "hidden"}`}
+      className={`left_sidebar ${showSidebar ? "show" : ""} `}
     >
       <nav className="w-full h-full">
-        <div className="pl-8">
+        <div className="pl-8 md:pl-6">
           <div className="mb-14 flex items-center justify-between h-20">
-            <AppLogo />
+            <AppLogo showSidebar={showSidebar} />
             {showSidebar && (
               <button className="pr-2" onClick={() => setShowSidebar(false)}>
                 <X size={26} className="text-gray-300" />

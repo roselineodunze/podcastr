@@ -21,7 +21,7 @@ export default function RootLayout({ children }) {
 
   return (
     <div className=" w-screen h-screen">
-      <main className=" h-full flex justify-between">
+      <main className="h-full flex justify-between ">
         <LeftSidebar showSidebar={showSidebar} setShowSidebar={setShowSidebar} />
         <section className="flex-1 flex flex-col justify-center">
           <div className="w-full max-w-[96%] mx-auto z-10 md:hidden">

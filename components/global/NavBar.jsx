@@ -8,7 +8,7 @@ const NavBar = ({ showSidebar, setShowSidebar }) => {
     <nav className="w-full h-20 z-10 flex justify-center items-center">
       <div className="w-full h-full flex items-center justify-between">
         <button onClick={() => setShowSidebar(true)}>
-          <Menu size={26} className="text-gray-300" />
+          {!showSidebar && <Menu size={26} className="text-gray-300 transform transition-transform duration-300 ease-in-out" />}
         </button>
         {/* {!showSidebar && <AppLogo />} */}
 
