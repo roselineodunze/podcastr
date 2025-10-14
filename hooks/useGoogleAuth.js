@@ -18,6 +18,10 @@ const useGoogleAuth = () => {
 
       if (result?.user) {
         const { uid, email } = result.user;
+
+        const token = await result.user.getIdToken();
+        document.cookie = `authToken=${token}; path=/; max-age=86400`;
+
         const userRef = doc(firestore, "users", uid);
         const userDoc = await getDoc(userRef);
         if (userDoc.exists()) {

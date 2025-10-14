@@ -3,21 +3,10 @@ import MusicPlayer from "@/components/global/MusicPlayer";
 import NavBar from "@/components/global/NavBar";
 import LeftSidebar from "@/components/sidebar/LeftSidebar";
 import RightSidebar from "@/components/sidebar/right-sidebar/RightSidebar";
-import { auth } from "@/firebase/firebase";
-import useAuthStore from "@/stores/authStore";
-import { useRouter } from "next/navigation";
 import { useState } from "react";
-import { useAuthState } from "react-firebase-hooks/auth";
 
 export default function RootLayout({ children }) {
-  const { user } = useAuthStore();
-  // const [authUser] = useAuthState(auth);
-  const router = useRouter();
   const [showSidebar, setShowSidebar] = useState(false);
-
-  if (!user) {
-    router.push("/sign-in");
-  }
 
   return (
     <div className=" w-screen h-screen">
