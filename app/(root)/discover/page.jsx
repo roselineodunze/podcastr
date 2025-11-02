@@ -6,7 +6,7 @@ import PodcastCard from "@/components/global/PodcastCard";
 const Discover = () => {
   return (
     <div className="mt-9 flex justify-center">
-      <section className="w-[95%] ">
+      <section className="w-full">
         <div className="w-full bg-black-2 px-2 flex items-center gap-2 h-12 rounded-md">
           <Image
             src="/icons/search.svg"

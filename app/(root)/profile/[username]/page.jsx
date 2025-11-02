@@ -13,11 +13,10 @@ const ProfilePage = ({ params }) => {
   const showCreatePodcastBtn = userProfile?.uid === user?.uid;
 
   return (
-    <div className="mt-9 flex justify-center">
-      <section className="w-[95%] ">
+    <div className="mt-9 ">
         <h1 className="text-white-1 font-normal text-xl">Podcaster Profile</h1>
-        <div className="mt-14 flex gap-5 mb-8">
-          <div className="w-[270px] h-[230px]">
+        <div className="mt-14 flex gap-5 mb-8 flex-col lg:flex-row">
+          <div className="w-full sm:w-[270px] h-[230px] max-w-full flex-shrink-0 ">
             <Image
               src="/images/bg-img.png"
               alt="Photo by Drew Beamer"
@@ -26,7 +25,7 @@ const ProfilePage = ({ params }) => {
               className="rounded-sm object-cover w-full h-full"
             />
           </div>
-          <div>
+          <div className="overflow-x-hidden">
             <div className="flex items-center gap-1 mb-3">
               <Image
                 src="/icons/blue.svg"
@@ -36,7 +35,7 @@ const ProfilePage = ({ params }) => {
               />
               <p className="text-[12px] text-white-3">UsePost Creator</p>
             </div>
-            <h1 className="text-white-1 font-semibold text-3xl mb-6">
+            <h1 className="text-white-1 font-semibold text-2xl md:text-3xl mb-6">
               {userProfile?.username}
             </h1>
             <div className="flex items-center gap-2 mb-7">
@@ -79,7 +78,6 @@ const ProfilePage = ({ params }) => {
           </div>
           <ProfilePodcasts/>
         </div>
-      </section>
     </div>
   );
 };

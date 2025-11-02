@@ -70,7 +70,7 @@ html {
     @apply grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4;
   }
   .right_sidebar {
-    @apply hidden lg:flex w-[310px] flex-col border-none bg-black-1 px-[30px] pt-8 max-xl:hidden;
+    @apply hidden xl:flex w-[310px] flex-col border-none bg-black-1 px-[30px] pt-8;
   }
   .left_sidebar {
     @apply md:flex w-full h-full shadow-lg z-50 transform transition-transform duration-300 ease-in-out border-none md:w-[70px] lg:w-[270px]  bg-black-1 text-white-1;

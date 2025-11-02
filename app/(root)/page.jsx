@@ -8,7 +8,7 @@ import { api } from "@/convex/_generated/api";
 const Home = () => {
   return (
     <div className="mt-9 flex justify-center">
-      <section className="w-[95%] ">
+      <section className="w-full">
         <h1 className="text-white-1 text-18">Trending Podcasts</h1>
         <div className="flex items-center justify-between ">
           {[1, 2, 3, 4].map((item) => (
