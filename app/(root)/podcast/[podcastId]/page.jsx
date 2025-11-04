@@ -12,7 +12,7 @@ const PodcastDetails = ({ params }) => {
   const { userProfile: author } = useGetUserByUsername(podcastDetails?.author);
 
   return (
-    <div className="mt-9 flex justify-center">
+    <div className="flex justify-center">
       <section className="w-[95%]">
         <div className="flex justify-between items-center">
           <h1 className="text-white-1 font-light text-xl">Currently Playing</h1>

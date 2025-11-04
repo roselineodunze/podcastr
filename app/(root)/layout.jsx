@@ -12,12 +12,12 @@ export default function RootLayout({ children }) {
     <div className=" w-screen h-screen">
       <main className="h-full flex justify-between ">
         <LeftSidebar showSidebar={showSidebar} setShowSidebar={setShowSidebar} />
-        <section className="flex-1 flex flex-col justify-center min-w-0">
-          <div className="w-full max-w-[96%] mx-auto z-10 md:hidden">
+        <section className="flex-1 flex flex-col min-w-0">
+          <div className="w-full px-[2.5%]">
             <NavBar showSidebar={showSidebar} setShowSidebar={setShowSidebar} />
           </div>
 
-          <div className="overflow-y-scroll w-full px-[3%] ">
+          <div className="overflow-y-scroll w-full px-[2.5%] pt-7">
             {children}
           </div>
         </section>

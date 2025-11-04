@@ -13,10 +13,10 @@ const ProfilePage = ({ params }) => {
   const showCreatePodcastBtn = userProfile?.uid === user?.uid;
 
   return (
-    <div className="mt-9 ">
+    <div className="">
         <h1 className="text-white-1 font-normal text-xl">Podcaster Profile</h1>
-        <div className="mt-14 flex gap-5 mb-8 flex-col lg:flex-row">
-          <div className="w-full sm:w-[270px] h-[230px] max-w-full flex-shrink-0 ">
+        <div className="mt-14 flex gap-5 mb-8 flex-col md:flex-row">
+          <div className="w-full md:w-[270px] h-[230px] max-w-full flex-shrink-0 ">
             <Image
               src="/images/bg-img.png"
               alt="Photo by Drew Beamer"
@@ -25,7 +25,7 @@ const ProfilePage = ({ params }) => {
               className="rounded-sm object-cover w-full h-full"
             />
           </div>
-          <div className="overflow-x-hidden">
+          <div className="overflow-x-hidden flex flex-col items-center md:items-start">
             <div className="flex items-center gap-1 mb-3">
               <Image
                 src="/icons/blue.svg"
@@ -50,7 +50,7 @@ const ProfilePage = ({ params }) => {
               </h1>
             </div>
             <button
-              className="text-white-1 flex items-center gap-2 justify-center bg-orange-1 h-10 rounded-md px-3 font-medium"
+              className="text-white-1 flex items-center gap-2 justify-center bg-orange-1 h-10 w-60 rounded-md px-3 font-medium"
             >
               <Image
                 src="/icons/play2.svg"

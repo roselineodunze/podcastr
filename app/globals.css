@@ -70,10 +70,10 @@ html {
     @apply grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4;
   }
   .right_sidebar {
-    @apply hidden xl:flex w-[310px] flex-col border-none bg-black-1 px-[30px] pt-8;
+    @apply hidden xl:flex w-[310px] flex-col border-none bg-black-1 px-[30px] pt-7;
   }
   .left_sidebar {
-    @apply md:flex w-full h-full shadow-lg z-50 transform transition-transform duration-300 ease-in-out border-none md:w-[70px] lg:w-[270px]  bg-black-1 text-white-1;
+    @apply md:flex w-full h-full pt-7 shadow-lg z-50 transform transition-transform duration-300 ease-in-out border-none md:w-[70px] lg:w-[270px]  bg-black-1 text-white-1;
   }
   .generate_thumbnail {
     @apply mt-[30px] flex w-full max-w-[520px] flex-col justify-between gap-2 rounded-lg border border-black-6 bg-black-1 px-2.5 py-2 md:flex-row md:gap-0;

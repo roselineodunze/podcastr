@@ -40,7 +40,7 @@ const LeftSidebar = ({ showSidebar, setShowSidebar }) => {
     >
       <nav className="w-full h-full">
         <div className="pl-8 md:pl-6">
-          <div className="mb-14 flex items-center justify-between h-20">
+          <div className="mb-14 flex items-center justify-between">
             <AppLogo showSidebar={showSidebar} />
             {showSidebar && (
               <button className="pr-2" onClick={() => setShowSidebar(false)}>

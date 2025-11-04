@@ -5,7 +5,7 @@ import PodcastCard from "@/components/global/PodcastCard";
 
 const Discover = () => {
   return (
-    <div className="mt-9 flex justify-center">
+    <div className=" flex justify-center">
       <section className="w-full">
         <div className="w-full bg-black-2 px-2 flex items-center gap-2 h-12 rounded-md">
           <Image

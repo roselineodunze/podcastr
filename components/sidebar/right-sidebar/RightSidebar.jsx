@@ -23,7 +23,7 @@ const RightSidebar = ( ) => {
     <section className="right_sidebar text-white-1">
       <Link
         href={`/profile/${user?.username}`}
-        className="flex items-center justify-between gap-2"
+        className="flex items-center justify-between gap-2 mb-14"
       >
         <div className="flex items-center w-[85%] gap-2">
           <Avatar className="bg-orange-1">
@@ -36,7 +36,7 @@ const RightSidebar = ( ) => {
         <ChevronRight className="text-orange-1 flex-end flex justify-end items-center" />
       </Link>
 
-      <div className=" flex justify-between mt-12">
+      <div className=" flex justify-between">
         <h1 className="text-[15px]">Fans Also Like</h1>
         <p className="text-14 text-orange-1">See All</p>
       </div>
