@@ -1,13 +1,11 @@
 "use client"
 import React, { useEffect, useState } from "react";
 import { Container, Grid, Skeleton, GridItem, Flex } from "@chakra-ui/react";
-import PodcastCard from "../global/PodcastCard";
 import useGetUserPodcasts from "@/hooks/useGetUserPodcasts";
-import NoUserPodcasts from "./NoUserPodcasts";
+import PodcastCard from "../global/PodcastCard";
 
-const ProfilePodcasts = () => {
+const DiscoverPodcasts = () => {
   const [isLoading, setIsLoading] = useState(true);
-  const { podcasts } = useGetUserPodcasts();
 
   useEffect(() => {
     setTimeout(() => {
@@ -35,15 +33,13 @@ const ProfilePodcasts = () => {
         </Grid>
       )}
 
-      {!isLoading && podcasts?.length === 0 && <NoUserPodcasts />}
-
-      {!isLoading && podcasts?.length > 0 && (
+      {!isLoading && (
         <Grid
           templateColumns={{ base: "repeat(2, 1fr)", sm: "repeat(3, 1fr)", md: "repeat(4, 1fr)" }}
           gap={1}
           columnGap={1}
         >
-          {podcasts.map((p, idx) => (
+          {[...Array(6)].map((p, idx) => (
             <PodcastCard key={idx} podcast={p} />
           ))}
         </Grid>
@@ -52,4 +48,4 @@ const ProfilePodcasts = () => {
   );
 };
 
-export default ProfilePodcasts;
+export default DiscoverPodcasts;

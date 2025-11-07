@@ -1,7 +1,9 @@
+"use client"
 import React from "react";
 import Image from "next/image";
 import NoResultsFound from "@/components/discover/NoResultsFound";
 import PodcastCard from "@/components/global/PodcastCard";
+import DiscoverPodcasts from "@/components/discover/DiscoverPodcasts";
 
 const Discover = () => {
   return (
@@ -37,12 +39,8 @@ caret-white-5 text-white-1 placeholder-white-3"
               <p className="text-12 text-white-1">Apply Filter</p>
             </div>
           </div>
-          <div className="flex flex-wrap justify-between">
-            {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16].map(
-              (_, i) => (
-                <PodcastCard key={i} />
-              )
-            )}
+          <div>
+            <DiscoverPodcasts/>
           </div>
           {/* <NoResultsFound /> */}
         </div>

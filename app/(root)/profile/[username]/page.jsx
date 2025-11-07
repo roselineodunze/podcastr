@@ -2,6 +2,7 @@
 import ProfilePodcasts from "@/components/profile/ProfilePodcasts";
 import useGetUserByUsername from "@/hooks/useGetUserByUsername";
 import useAuthStore from "@/stores/authStore";
+import { Button } from "@chakra-ui/react";
 import Image from "next/image";
 import { use } from "react";
 
