@@ -17,7 +17,7 @@ const DiscoverPodcasts = () => {
       {isLoading && (
         <Grid
           templateColumns={{ base: "repeat(2, 1fr)", sm: "repeat(3, 1fr)", md: "repeat(4, 1fr)" }}
-          gap={1}
+          gap={{ base: 3, sm: 4, md: 5 }}
           columnGap={1}
         >
           {[...Array(6)].map((_, idx) => (

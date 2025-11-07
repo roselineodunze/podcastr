@@ -2,19 +2,14 @@
 
 import PodcastCard from "@/components/global/PodcastCard";
 import LatestPodcastListing from "@/components/homepage/LatestPodcastListing";
-import { useQuery } from "convex/react";
-import { api } from "@/convex/_generated/api";
+import ScrollCards from "@/components/homepage/ScrollCards";
 
 const Home = () => {
   return (
     <div className="flex justify-center">
       <section className="w-full">
         <h1 className="text-white-1 text-18">Trending Podcasts</h1>
-        <div className="flex items-center justify-between ">
-          {[1, 2, 3, 4].map((item) => (
-            <PodcastCard key={item} />
-          ))}
-        </div>
+        <ScrollCards/>
         <div className="my-6">
           <div className="flex justify-between">
             <h1 className="text-white-1 text-18">Latest Podcasts</h1>
@@ -27,11 +22,7 @@ const Home = () => {
           </div>
         </div>
         <h1 className="text-white-1 text-18">Popular Podcasts</h1>
-        <div className="flex items-center justify-between">
-          {[1, 2, 3, 4].map((_, i) => (
-            <PodcastCard key={i} />
-          ))}
-        </div>
+        <ScrollCards/>
       </section>
     </div>
   );

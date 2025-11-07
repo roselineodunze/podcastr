@@ -4,7 +4,7 @@ import Link from "next/link";
 
 const PodcastCard = ({ podcast }) => {
   return (
-    <Link href={`/podcast/${podcast?.id}`} className="mb-5">
+    <Link href={`/podcast/${podcast?.id}`} className="mb-2">
       <figure>
         <div>
           <Image
