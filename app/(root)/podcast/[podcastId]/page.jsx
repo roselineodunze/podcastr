@@ -5,11 +5,18 @@ import PodcastCard from "@/components/global/PodcastCard";
 import { use } from "react";
 import useGetPodcastById from "@/hooks/useGetPodcastById";
 import useGetUserByUsername from "@/hooks/useGetUserByUsername";
+import ProfileMusicPlayer from "@/components/profile/ProfileMusicPlayer";
+import { useMutation, useQuery } from "convex/react";
+import { api } from "@/convex/_generated/api";
+
 
 const PodcastDetails = ({ params }) => {
   const { podcastId } = use(params);
   const { podcastDetails } = useGetPodcastById(podcastId);
   const { userProfile: author } = useGetUserByUsername(podcastDetails?.author);
+  const audioStorageId = podcastDetails?.audioStorageId
+  const audioUrl = useQuery(api.audio.getAudioUrl, { storageId: audioStorageId });
+  console.log("Audiourl: " + audioUrl)
 
   return (
     <div className="flex justify-center">
@@ -37,7 +44,7 @@ const PodcastDetails = ({ params }) => {
             />
           </div>
           <div className="flex-1 pt-3 pb-1 flex flex-col justify-between">
-            <div>
+            <div >
               <div className="flex items-center justify-between">
                 <h1 className="text-white-1 font-semibold text-3xl ">
                   {podcastDetails?.podcastTitle}
@@ -79,32 +86,7 @@ const PodcastDetails = ({ params }) => {
                 <p className="text-[13px] text-white-3">{author?.username}</p>
               </div>
             </div>
-            <div className="flex items-center gap-4">
-              <Image
-                src="/icons/reverse.svg"
-                alt="app-logo"
-                width={18}
-                height={18}
-              />
-              <Image
-                src="/icons/Play.svg"
-                alt="app-logo"
-                width={33}
-                height={33}
-              />
-              <Image
-                src="/icons/forward.svg"
-                alt="app-logo"
-                width={18}
-                height={18}
-              />
-            </div>
-            <div className="">
-              <p className="text-[13px] text-white-3 mb-1">1:45/4:47</p>
-              <div className="relative h-1 w-60 bg-black-2">
-                <div className="h-full w-[40%] bg-white-2"></div>
-              </div>
-            </div>
+            <ProfileMusicPlayer audioUrl={audioUrl}/>
           </div>
         </div>
         <div className="mt-9 w-[90%]">
