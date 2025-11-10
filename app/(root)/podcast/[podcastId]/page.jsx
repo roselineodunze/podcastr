@@ -86,7 +86,7 @@ const PodcastDetails = ({ params }) => {
                 <p className="text-[13px] text-white-3">{author?.username}</p>
               </div>
             </div>
-            <ProfileMusicPlayer audioUrl={audioUrl}/>
+            <ProfileMusicPlayer audioUrl={audioUrl} podcastDetails={podcastDetails}/>
           </div>
         </div>
         <div className="mt-9 w-[90%]">
