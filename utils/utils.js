@@ -10,9 +10,9 @@ export const base64ToBlob = (base64, type = "audio/mp3") => {
   return new Blob([byteArray], { type });
 };
 
-export const getAudioDuration = (audioBlob) => {
+export const getAudioDuration = (file) => {
   return new Promise((resolve, reject) => {
-    const audioUrl = URL.createObjectURL(audioBlob);
+    const audioUrl = URL.createObjectURL(file);
     const audioElement = new Audio(audioUrl);
 
     audioElement.addEventListener("loadedmetadata", () => {
@@ -31,5 +31,3 @@ export const formatTime = (time) => {
   const seconds = Math.floor(time % 60);
   return `${minutes}:${seconds < 10 ? "0" : ""}${seconds}`;
 };
-
-

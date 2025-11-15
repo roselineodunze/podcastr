@@ -1,6 +1,6 @@
 "use client";
 import useCreatePodcast from "@/hooks/useCreatePodcast";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import {
   Select,
   SelectContent,
@@ -18,10 +18,11 @@ import { api } from "@/convex/_generated/api";
 import { base64ToBlob, getAudioDuration } from "@/utils/utils";
 import useUserProfileStore from "@/stores/userProfileStore";
 import useAuthStore from "@/stores/authStore";
-import { useRouter } from "next/navigation";
 import { Spinner } from "@/components/ui/spinner";
 import { Tooltip } from "../ui/tooltip";
 import { FileMusic } from "lucide-react";
+import usePreviewCustomAudio from "@/hooks/usePreviewCustomAudio";
+import { showToast } from "@/utils/showToast";
 
 const CreatePodcastForm = () => {
   const [podcastData, setPodcastData] = useState({
@@ -32,14 +33,37 @@ const CreatePodcastForm = () => {
     audioStorageId: "",
     audioDuration: 0,
   });
-  const [generatedAudio, setGeneratedAudio] = useState(null);
   const [audioFile, setAudioFile] = useState(null);
-  const { handlePodcastCreation, podcastId, loading } = useCreatePodcast();
   const { user } = useAuthStore();
   const { setUserprofile } = useUserProfileStore();
-  // const generatePodcastAudio = useAction(api.openai.generatePodcastAudio);
   const generateUploadUrl = useMutation(api.audio.generateUploadUrl);
-  const router = useRouter();
+  const { handlePodcastCreation, loading } = useCreatePodcast();
+
+  const saveAudioFile = async (input) => {
+    let file;
+
+    if (input instanceof File) {
+      file = input;
+    } else {
+      file = new File([input], `podcast-${Date.now()}.mp3`, {
+        type: "audio/mp3",
+      });
+    }
+
+    const audioDuration = await getAudioDuration(file);
+    setPodcastData((prev) => ({
+      ...prev,
+      audioDuration: Number(audioDuration.toFixed(2)),
+    }));
+
+    setAudioFile(file);
+  };
+
+  const { handleAudioChange, selectedFile, audioPreview, setAudioPreview } =
+    usePreviewCustomAudio({ onFileSelect: saveAudioFile });
+ 
+
+  const fileRef = useRef(null);
 
   useEffect(() => {
     setUserprofile(user);
@@ -53,61 +77,81 @@ const CreatePodcastForm = () => {
     }));
   };
 
-  const handlePodcastAudioGeneration = async () => {
+  // const saveAudioFile = async (input) => {
+  //   let file;
+
+  //   if (input instanceof File) {
+  //     file = input;
+  //   } else {
+  //     file = new File([input], `podcast-${Date.now()}.mp3`, {
+  //       type: "audio/mp3",
+  //     });
+  //   }
+
+  //   const audioDuration = await getAudioDuration(file);
+  //   setPodcastData((prev) => ({
+  //     ...prev,
+  //     audioDuration: Number(audioDuration.toFixed(2)),
+  //   }));
+
+  //   setAudioFile(file);
+  // };
+
+  // THIS FUNCTION IS FOR AI AUDIO GENERATION
+  const handleAIAudioGeneration = async () => {
     const { voicePrompt, selectedVoice } = podcastData;
     const audioBase64 = await generatePodcastAudio({
       voicePrompt,
       selectedVoice,
     });
-    console.log("Received audio:", audioBase64);
+    console.log("Received AI audio:", audioBase64);
 
-    const audioBlob = base64ToBlob(audioBase64);
-    const audioDuration = await getAudioDuration(audioBlob);
-    setPodcastData((prev) => ({
-      ...prev,
-      audioDuration: Number(audioDuration.toFixed(2)),
-    }));
+    const blob = base64ToBlob(audioBase64, "audio/mp3");
+    setAudioPreview(URL.createObjectURL(blob));
 
-    const fileName = `podcast-${Date.now()}.mp3`;
-    const newAudioFile = new File([audioBlob], fileName, {
-      type: "audio/mp3",
-    });
+    saveAudioFile(blob);
+  };
 
-    setAudioFile(newAudioFile);
+  //THIS FUNCTION IS FOR CUSTOM AUDIO UPLOAD
+  const handleCustomAudioUpload = (e) => {
+    console.log("changing audio");
+    handleAudioChange(e);
 
-    const audio = `data:audio/mp3;base64,${audioBase64}`;
-    setGeneratedAudio(audio);
+    // if (!selectedFile) return;
+    // console.log("selcected file is: " + selectedFile);
+
+    // saveAudioFile(selectedFile);
   };
 
   const handleAudioUpload = async () => {
+    console.log("audio file is: " + audioFile);
     try {
-      // if (!audioFile) throw new Error("No audio file selected.");
+      if (!audioFile) throw new Error("No audio file selected.");
 
-      // const uploadUrl = await generateUploadUrl();
-      // if (!uploadUrl) throw new Error("Failed to get upload URL.");
+      const uploadUrl = await generateUploadUrl();
+      if (!uploadUrl) throw new Error("Failed to get upload URL.");
 
-      // const res = await fetch(uploadUrl, {
-      //   method: "POST",
-      //   headers: { "Content-Type": audioFile.type },
-      //   body: audioFile,
-      // });
+      const res = await fetch(uploadUrl, {
+        method: "POST",
+        headers: { "Content-Type": audioFile.type },
+        body: audioFile,
+      });
 
-      // if (!res.ok) throw new Error("Audio upload failed.");
+      if (!res.ok) throw new Error("Audio upload failed.");
 
-      // const { storageId } = await res.json();
-      // if (!storageId) throw new Error("No storage ID returned from upload.");
-      // console.log("✅ Uploaded! Storage ID:", storageId);
+      const { storageId } = await res.json();
+      if (!storageId) throw new Error("No storage ID returned from upload.");
+      console.log("✅ Uploaded! Storage ID:", storageId);
 
       const finalPodcastData = {
         ...podcastData,
-        // audioStorageId: storageId,
+        audioStorageId: storageId,
       };
 
       setPodcastData(finalPodcastData);
       console.log(finalPodcastData);
 
       await handlePodcastCreation(finalPodcastData);
-      router.push(`/podcast/${podcastId}`);
     } catch (err) {
       console.error("❌ Failed to upload and create podcast:", err?.message);
       showToast.error("Failed to create podcast", err?.message);
@@ -191,7 +235,7 @@ border-0 placeholder-white-3 bg-black-1 placeholder:text-[1rem]"
 
           <Button
             className="disabled bg-orange-1 w-[80] h-10 rounded-md text-16 ml-1"
-            onClick={handlePodcastAudioGeneration}
+            onClick={handleAIAudioGeneration}
           >
             Generate
           </Button>
@@ -199,17 +243,27 @@ border-0 placeholder-white-3 bg-black-1 placeholder:text-[1rem]"
       </Tooltip>
 
       <div className="bg-black-1 h-24 rounded-2xl mt-10 flex justify-center items-center">
-        <Button className="h-8 text-16 flex flex-col ">
-          <FileMusic style={{ width: 24, height: 24 }} className="text-white-3" />
+        <Button
+          className="h-8 text-16 flex flex-col "
+          onClick={() => fileRef.current.click()}
+        >
+          <FileMusic
+            style={{ width: 24, height: 24 }}
+            className="text-white-3"
+          />
           <p className="text-[1rem] text-white-3">
             <span className="text-orange-1">Upload </span>custom audio
           </p>
         </Button>
+        <input
+          type="file"
+          ref={fileRef}
+          hidden
+          onChange={handleCustomAudioUpload}
+        />
       </div>
 
-      {generatedAudio && (
-        <audio controls src={generatedAudio} className="my-4" />
-      )}
+      {audioPreview && <audio controls src={audioPreview} className="my-4" />}
 
       <div className="w-fit mb-3 bg-black-1 px-3 flex items-center gap-3 h-12 rounded-md mt-10">
         <p className="text-16">AI prompt to generate image</p>
