@@ -23,6 +23,8 @@ import { Tooltip } from "../ui/tooltip";
 import { FileMusic } from "lucide-react";
 import usePreviewCustomAudio from "@/hooks/usePreviewCustomAudio";
 import { showToast } from "@/utils/showToast";
+import usePreviewImg from "@/hooks/usePreviewImg";
+import Image from "next/image";
 
 const CreatePodcastForm = () => {
   const [podcastData, setPodcastData] = useState({
@@ -32,12 +34,14 @@ const CreatePodcastForm = () => {
     selectedVoice: "",
     audioStorageId: "",
     audioDuration: 0,
+    imageStorageId: "",
   });
   const [audioFile, setAudioFile] = useState(null);
   const { user } = useAuthStore();
   const { setUserprofile } = useUserProfileStore();
   const generateUploadUrl = useMutation(api.audio.generateUploadUrl);
   const { handlePodcastCreation, loading } = useCreatePodcast();
+  const { selectedImgFile, handleImageChange, remoteFile } = usePreviewImg();
 
   const saveAudioFile = async (input) => {
     let file;
@@ -59,11 +63,15 @@ const CreatePodcastForm = () => {
     setAudioFile(file);
   };
 
-  const { handleAudioChange, selectedFile, audioPreview, setAudioPreview } =
-    usePreviewCustomAudio({ onFileSelect: saveAudioFile });
- 
+  const {
+    handleAudioChange,
+    selectedAudioFile,
+    audioPreview,
+    setAudioPreview,
+  } = usePreviewCustomAudio({ onFileSelect: saveAudioFile });
 
-  const fileRef = useRef(null);
+  const audioFileRef = useRef(null);
+  const imageFileRef = useRef(null);
 
   useEffect(() => {
     setUserprofile(user);
@@ -76,26 +84,6 @@ const CreatePodcastForm = () => {
       [name]: value,
     }));
   };
-
-  // const saveAudioFile = async (input) => {
-  //   let file;
-
-  //   if (input instanceof File) {
-  //     file = input;
-  //   } else {
-  //     file = new File([input], `podcast-${Date.now()}.mp3`, {
-  //       type: "audio/mp3",
-  //     });
-  //   }
-
-  //   const audioDuration = await getAudioDuration(file);
-  //   setPodcastData((prev) => ({
-  //     ...prev,
-  //     audioDuration: Number(audioDuration.toFixed(2)),
-  //   }));
-
-  //   setAudioFile(file);
-  // };
 
   // THIS FUNCTION IS FOR AI AUDIO GENERATION
   const handleAIAudioGeneration = async () => {
@@ -116,11 +104,6 @@ const CreatePodcastForm = () => {
   const handleCustomAudioUpload = (e) => {
     console.log("changing audio");
     handleAudioChange(e);
-
-    // if (!selectedFile) return;
-    // console.log("selcected file is: " + selectedFile);
-
-    // saveAudioFile(selectedFile);
   };
 
   const handleAudioUpload = async () => {
@@ -143,19 +126,51 @@ const CreatePodcastForm = () => {
       if (!storageId) throw new Error("No storage ID returned from upload.");
       console.log("✅ Uploaded! Storage ID:", storageId);
 
-      const finalPodcastData = {
-        ...podcastData,
-        audioStorageId: storageId,
-      };
-
-      setPodcastData(finalPodcastData);
-      console.log(finalPodcastData);
-
-      await handlePodcastCreation(finalPodcastData);
+      return storageId;
     } catch (err) {
-      console.error("❌ Failed to upload and create podcast:", err?.message);
-      showToast.error("Failed to create podcast", err?.message);
+      console.error("❌ Failed to upload and audio:", err?.message);
+      showToast.error("Failed to upload audio", err?.message);
     }
+  };
+
+  const handleImageUpload = async () => {
+    console.log("image file is: " + remoteFile);
+    try {
+      if (!remoteFile) throw new Error("No image file selected.");
+
+      const uploadUrl = await generateUploadUrl();
+      if (!uploadUrl) throw new Error("Failed to get upload URL.");
+
+      const res = await fetch(uploadUrl, {
+        method: "POST",
+        headers: { "Content-Type": remoteFile.type },
+        body: remoteFile,
+      });
+
+      if (!res.ok) throw new Error("Image upload failed.");
+
+      const { storageId } = await res.json();
+      if (!storageId) throw new Error("No storage ID returned from upload.");
+      console.log("✅ Uploaded! Storage ID:", storageId);
+
+      return storageId;
+    } catch (err) {
+      console.error("❌ Failed to upload image:", err?.message);
+      showToast.error("Failed to upload image", err?.message);
+    }
+  };
+
+  const handleSubmitData = async () => {
+    const audioStorageId = await handleAudioUpload();
+    const imageStorageId = await handleImageUpload();
+
+    const finalPodcastData = {
+      ...podcastData,
+      audioStorageId,
+      imageStorageId,
+    };
+    console.log(finalPodcastData);
+    await handlePodcastCreation(finalPodcastData);
   };
 
   return (
@@ -190,7 +205,7 @@ border-0 placeholder-white-3 bg-black-1 placeholder:text-[1rem]"
         }}
         unstyled
       >
-        <div>
+        <div className="cursor-pointer">
           <label className="disabled text-16 pl-1">Select AI voice</label>
           <Select
             name="selectedVoice"
@@ -245,7 +260,7 @@ border-0 placeholder-white-3 bg-black-1 placeholder:text-[1rem]"
       <div className="bg-black-1 h-24 rounded-2xl mt-10 flex justify-center items-center">
         <Button
           className="h-8 text-16 flex flex-col "
-          onClick={() => fileRef.current.click()}
+          onClick={() => audioFileRef.current.click()}
         >
           <FileMusic
             style={{ width: 24, height: 24 }}
@@ -257,7 +272,7 @@ border-0 placeholder-white-3 bg-black-1 placeholder:text-[1rem]"
         </Button>
         <input
           type="file"
-          ref={fileRef}
+          ref={audioFileRef}
           hidden
           onChange={handleCustomAudioUpload}
         />
@@ -266,18 +281,35 @@ border-0 placeholder-white-3 bg-black-1 placeholder:text-[1rem]"
       {audioPreview && <audio controls src={audioPreview} className="my-4" />}
 
       <div className="w-fit mb-3 bg-black-1 px-3 flex items-center gap-3 h-12 rounded-md mt-10">
-        <p className="text-16">AI prompt to generate image</p>
         <Button
           className="bg-black-2 h-8 text-16"
-          onClick={async () => await handlePodcastCreation(podcastData)}
+          onClick={async () => imageFileRef.current.click()}
         >
           Upload custom image
         </Button>
+        <input
+          type="file"
+          ref={imageFileRef}
+          hidden
+          onChange={handleImageChange}
+        />
       </div>
+
+      {selectedImgFile && (
+        <div className=" w-[300px] mt-5 h-[300px] overflow-hidden aspect-square">
+          <Image
+            src={selectedImgFile}
+            width={300}
+            height={300}
+            className="w-full h-full object-cover"
+            alt="selected image"
+          />
+        </div>
+      )}
 
       <Button
         className="bg-orange-1 w-full h-10 rounded-sm mb-10 text-16"
-        onClick={handleAudioUpload}
+        onClick={handleSubmitData}
       >
         {loading ? <Spinner className="size-6" /> : "Submit & publish podcast"}
       </Button>

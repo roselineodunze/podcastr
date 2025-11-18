@@ -2,7 +2,7 @@ import { showToast } from "@/utils/showToast";
 import { useState } from "react";
 
 const usePreviewCustomAudio = ({ onFileSelect } = {}) => {
-  const [selectedFile, setSelectedFile] = useState(null);
+  const [selectedAudioFile, setSelectedAudioFile] = useState(null);
   const [audioPreview, setAudioPreview] = useState(null); 
   const maxDuration = 10;
 
@@ -17,11 +17,11 @@ const usePreviewCustomAudio = ({ onFileSelect } = {}) => {
             "Failed to upload podcast",
             "Audio duration is too long. Max duration is 10 seconds."
           );
-          setSelectedFile(null);
+          setSelectedAudioFile(null);
           setAudioPreview(null);
         } else {
           console.log("Audio file is valid:", file);
-          setSelectedFile(file);
+          setSelectedAudioFile(file);
           setAudioPreview(URL.createObjectURL(file));
 
           if (onFileSelect) onFileSelect(file);
@@ -32,7 +32,7 @@ const usePreviewCustomAudio = ({ onFileSelect } = {}) => {
     }
   };
 
-  return { handleAudioChange, selectedFile, audioPreview, setAudioPreview };
+  return { handleAudioChange, selectedAudioFile, audioPreview, setAudioPreview };
 };
 
 export default usePreviewCustomAudio;

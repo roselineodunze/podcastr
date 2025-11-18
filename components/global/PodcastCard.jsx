@@ -17,8 +17,8 @@ const PodcastCard = ({ podcast }) => {
         </div>
 
         <div className="mt-2">
-          <h1 className="text-white-1 text-[14px] mb-1">The joe rogan</h1>
-          <p className="text-white-3 text-[12px]">a long form in</p>
+          <h1 className="text-white-1 text-[14px] mb-1">{podcast?.podcastTitle}</h1>
+          <p className="text-white-3 text-[12px]">{podcast?.podcastDescription}</p>
         </div>
       </figure>
     </Link>

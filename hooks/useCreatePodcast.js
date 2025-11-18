@@ -32,7 +32,7 @@ const useCreatePodcast = () => {
       podcastDescription: podcastData.podcastDescription,
       audioStorageId: podcastData.audioStorageId,
       imageUrl: "",
-      imageStorageId: "",
+      imageStorageId: podcastData.imageStorageId,
       author: user.username,
       authorId: user.uid,
       authorImageUrl: user.profilePicURL,

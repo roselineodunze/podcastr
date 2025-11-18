@@ -1,4 +1,4 @@
-"use client"
+"use client";
 import React, { useEffect, useState } from "react";
 import { Container, Grid, Skeleton, GridItem, Flex } from "@chakra-ui/react";
 import PodcastCard from "../global/PodcastCard";
@@ -18,7 +18,11 @@ const ProfilePodcasts = () => {
     <Container maxW={"container.lg"}>
       {isLoading && (
         <Grid
-          templateColumns={{ base: "repeat(2, 1fr)", sm: "repeat(3, 1fr)", md: "repeat(4, 1fr)" }}
+          templateColumns={{
+            base: "repeat(2, 1fr)",
+            sm: "repeat(3, 1fr)",
+            md: "repeat(4, 1fr)",
+          }}
           gap={1}
           columnGap={1}
         >
@@ -39,7 +43,11 @@ const ProfilePodcasts = () => {
 
       {!isLoading && podcasts?.length > 0 && (
         <Grid
-          templateColumns={{ base: "repeat(2, 1fr)", sm: "repeat(3, 1fr)", md: "repeat(4, 1fr)" }}
+          templateColumns={{
+            base: "repeat(2, 1fr)",
+            sm: "repeat(3, 1fr)",
+            md: "repeat(4, 1fr)",
+          }}
           gap={1}
           columnGap={1}
         >

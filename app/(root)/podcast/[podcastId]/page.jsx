@@ -8,6 +8,7 @@ import useGetUserByUsername from "@/hooks/useGetUserByUsername";
 import ProfileMusicPlayer from "@/components/profile/ProfileMusicPlayer";
 import { useMutation, useQuery } from "convex/react";
 import { api } from "@/convex/_generated/api";
+import ScrollCards from "@/components/homepage/ScrollCards";
 
 
 const PodcastDetails = ({ params }) => {
@@ -108,11 +109,7 @@ const PodcastDetails = ({ params }) => {
         </div>
         <div>
           <h1 className="text-white-1 font-medium text-l">Similar Podcasts</h1>
-          <div className="flex flex-wrap justify-between mb-7">
-            {[1, 2, 3, 4].map((_, i) => (
-              <PodcastCard key={i} />
-            ))}
-          </div>
+          <ScrollCards/>
         </div>
       </section>
     </div>
