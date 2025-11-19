@@ -1,90 +1,68 @@
-# Welcome to your Convex functions directory!
+🎙Podcastr
 
-Write your Convex functions here.
-See https://docs.convex.dev/functions for more.
+A modern podcast platform with AI-powered audio generation, custom uploads, and an intuitive listening experience.
 
-A query function that takes two arguments looks like:
+🚀 Live Demo
+https://podcastr-ivory-eight.vercel.app
 
-```ts
-// convex/myFunctions.ts
-import { query } from "./_generated/server";
-import { v } from "convex/values";
+✨ Features
 
-export const myQueryFunction = query({
-  // Validators for arguments.
-  args: {
-    first: v.number(),
-    second: v.string(),
-  },
+Google Authentication - Secure sign-in with Google
+AI Audio Generation - Create podcast audio using OpenAI Text-to-Speech with custom voice selection and prompt-based generation
+Custom Uploads - Upload your own audio files (up to 5 seconds) and custom cover images with live preview
+Podcast Details Page - Dedicated page for each podcast with full transcript, similar podcast recommendations, and playback
+Custom Audio Player - Fully functional player with playback controls
+Dynamic Homepage - Browse trending, latest, and popular podcasts with popular podcasters sidebar
+User Profiles - Manage and view all your podcasts in one place
+Podcast Discovery - Search and filter through available podcasts
+Theme Toggle - Switch between light and dark modes
+Responsive Design - Optimized experience across all devices
 
-  // Function implementation.
-  handler: async (ctx, args) => {
-    // Read the database as many times as you need here.
-    // See https://docs.convex.dev/database/reading-data.
-    const documents = await ctx.db.query("tablename").collect();
+🔮 Coming Soon
 
-    // Arguments passed from the client are properties of the args object.
-    console.log(args.first, args.second);
+Smart Algorithms - Intelligent categorization for trending, popular, and latest podcasts
+Enhanced Discovery - Improved filtering and recommendation systems
+Performance Optimization - Implementing lazy loading and Next.js optimization techniques for faster routing
+UI Polish - Refined visual elements and enhanced responsiveness
 
-    // Write arbitrary JavaScript here: filter, aggregate, build derived data,
-    // remove non-public properties, or create new objects.
-    return documents;
-  },
-});
-```
+🛠️ Tech Stack
 
-Using this query function in a React component looks like:
+Frontend: Next.js, Chakra UI, Lucide React
+Backend/Database: Firebase
+File Storage: Convex
+AI Integration: OpenAI Text-to-Speech API
+Design Reference: FreeCodeCamp Figma Design
 
-```ts
-const data = useQuery(api.myFunctions.myQueryFunction, {
-  first: 10,
-  second: "hello",
-});
-```
+🚀 Getting Started
 
-A mutation function looks like:
+# Clone the repository
+git clone https://github.com/roselineodunze/podcastr.git
 
-```ts
-// convex/myFunctions.ts
-import { mutation } from "./_generated/server";
-import { v } from "convex/values";
+# Install dependencies
+npm install
 
-export const myMutationFunction = mutation({
-  // Validators for arguments.
-  args: {
-    first: v.string(),
-    second: v.string(),
-  },
+# Run development server
+npm run dev
 
-  // Function implementation.
-  handler: async (ctx, args) => {
-    // Insert or modify documents in the database here.
-    // Mutations can also read from the database like queries.
-    // See https://docs.convex.dev/database/writing-data.
-    const message = { body: args.first, author: args.second };
-    const id = await ctx.db.insert("messages", message);
+# Environment Variables
+Create a `.env.local` file with your credentials:
 
-    // Optionally, return a value from your mutation.
-    return await ctx.db.get(id);
-  },
-});
-```
+NEXT_PUBLIC_FIREBASE_API_KEY=your_firebase_api_key
+NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN=your_project.firebaseapp.com
+NEXT_PUBLIC_FIREBASE_PROJECT_ID=your_firebase_project_id
+NEXT_PUBLIC_STORAGE_BUCKET=your_project.firebasestorage.app
+NEXT_PUBLIC_MESSAGE_SENDER_ID=your_sender_id
+NEXT_PUBLIC_APP_ID=your_firebase_app_id
+NEXT_PUBLIC_MEASUREMENT_ID=your_measurement_id
+CONVEX_DEPLOYMENT=your_convex_deployment
+NEXT_PUBLIC_CONVEX_URL=your_convex_url
+SPEECHIFY_API_KEY=your_speechify_api_key
 
-Using this mutation function in a React component looks like:
+🎯 Development Approach
+Built with custom React hooks for modular, maintainable functionality. Focused on performance optimization and user experience as core priorities.
 
-```ts
-const mutation = useMutation(api.myFunctions.myMutationFunction);
-function handleButtonPress() {
-  // fire and forget, the most common way to use mutations
-  mutation({ first: "Hello!", second: "me" });
-  // OR
-  // use the result once the mutation has completed
-  mutation({ first: "Hello!", second: "me" }).then((result) =>
-    console.log(result),
-  );
-}
-```
+👤 Author
+Roseline Odunze
 
-Use the Convex CLI to push your functions to a deployment. See everything
-the Convex CLI can do by running `npx convex -h` in your project root
-directory. To learn more, launch the docs with `npx convex docs`.
+GitHub: roselineodunze
+LinkedIn: https://www.linkedin.com/in/chinonyelum-odunze
