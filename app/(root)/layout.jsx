@@ -17,7 +17,7 @@ export default function RootLayout({ children }) {
             <NavBar showSidebar={showSidebar} setShowSidebar={setShowSidebar} />
           </div>
 
-          <div className="overflow-y-scroll w-full px-[2.5%] pt-7">
+          <div className="overflow-y-scroll w-full px-[4%] sm:px-[2.5%] pt-7">
             {children}
           </div>
         </section>

@@ -41,7 +41,7 @@ const ScrollCards = () => {
         >
           <ChevronRightIcon className="w-5 h-5 text-black" />
         </button>
-        <div className="flex space-x-4 px-4 py-2">
+        <div className="flex space-x-4 pr-4 py-2">
           {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map((item) => (
             <div key={item} className="flex-shrink-0 w-[180px]">
               <PodcastCard />

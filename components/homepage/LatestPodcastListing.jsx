@@ -10,7 +10,7 @@ const LatestPodcastListing = ({ index }) => {
         index !== 4 ? "border-b-2 border-gray-800" : ""
       }`}
     >
-      <div className="flex items-center gap-5 w-[70%] sm:w-1/2 my-2">
+      <div className="flex items-center gap-5 w-[70%] sm:w-[60%] my-2">
         <h3 className="text-white-1">{index}</h3>
         <div className="flex items-center my-2 gap-2 h-10">
           <div className="w-10 rounded-sm h-full">
