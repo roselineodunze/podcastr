@@ -2,7 +2,7 @@
 import Image from "next/image";
 import { Avatar, AvatarImage } from "@/components/ui/avatar";
 import PodcastCard from "@/components/global/PodcastCard";
-import { use } from "react";
+import { use, useState } from "react";
 import useGetPodcastById from "@/hooks/useGetPodcastById";
 import useGetUserByUsername from "@/hooks/useGetUserByUsername";
 import ProfileMusicPlayer from "@/components/profile/ProfileMusicPlayer";
@@ -10,14 +10,20 @@ import { useMutation, useQuery } from "convex/react";
 import { api } from "@/convex/_generated/api";
 import ScrollCards from "@/components/homepage/ScrollCards";
 
-
 const PodcastDetails = ({ params }) => {
   const { podcastId } = use(params);
   const { podcastDetails } = useGetPodcastById(podcastId);
   const { userProfile: author } = useGetUserByUsername(podcastDetails?.author);
-  const audioStorageId = podcastDetails?.audioStorageId
-  const audioUrl = useQuery(api.audio.getAudioUrl, { storageId: audioStorageId });
-  console.log("Audiourl: " + audioUrl)
+  const audioStorageId = podcastDetails?.audioStorageId;
+  const audioUrl = useQuery(api.audio.getAudioUrl, {
+    storageId: audioStorageId,
+  });
+  const imageStorageId = podcastDetails?.imageStorageId;
+  const imageUrl = useQuery(api.audio.getAudioUrl, {
+    storageId: imageStorageId,
+  });
+  console.log("Audiourl: " + audioUrl);
+  const [openThreeDots, setOpenThreeDots] = useState(false)
 
   return (
     <div className="flex justify-center">
@@ -37,7 +43,7 @@ const PodcastDetails = ({ params }) => {
         <div className="mt-14 flex gap-5 mb-8">
           <div className="w-[270px] h-[230px]">
             <Image
-              src="/images/bg-img.png"
+              src={imageUrl || "/images/bg-img.png"}
               alt="Photo by Drew Beamer"
               width={270}
               height={230}
@@ -45,19 +51,20 @@ const PodcastDetails = ({ params }) => {
             />
           </div>
           <div className="flex-1 pt-3 pb-1 flex flex-col justify-between">
-            <div >
+            <div>
               <div className="flex items-center justify-between">
                 <h1 className="text-white-1 font-semibold text-3xl ">
                   {podcastDetails?.podcastTitle}
                 </h1>
-                <div className="relative">
+                <div className="relative cursor-pointer">
                   <Image
                     src="/icons/three-dots.svg"
                     alt="app-logo"
                     width={23}
                     height={23}
+                    onClick={() => setOpenThreeDots(!openThreeDots)}
                   />
-                  <div className="absolute right-[90%] bg-black-1 w-36 h-20 flex flex-col justify-around px-2 py-2">
+                  <div className={`absolute right-[90%] bg-black-1 w-36 h-20 flex flex-col justify-around px-2 py-2 ${openThreeDots ? "" : "hidden"}`}>
                     <div className="flex items-center gap-2">
                       <Image
                         src="/icons/edit.svg"
@@ -87,7 +94,10 @@ const PodcastDetails = ({ params }) => {
                 <p className="text-[13px] text-white-3">{author?.username}</p>
               </div>
             </div>
-            <ProfileMusicPlayer audioUrl={audioUrl} podcastDetails={podcastDetails}/>
+            <ProfileMusicPlayer
+              audioUrl={audioUrl}
+              podcastDetails={podcastDetails}
+            />
           </div>
         </div>
         <div className="mt-9 w-[90%]">
@@ -109,7 +119,7 @@ const PodcastDetails = ({ params }) => {
         </div>
         <div>
           <h1 className="text-white-1 font-medium text-l">Similar Podcasts</h1>
-          <ScrollCards/>
+          <ScrollCards />
         </div>
       </section>
     </div>
